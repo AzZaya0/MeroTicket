@@ -1,11 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../constants/app_color.dart';
 import 'themeExtension/theme_extension.dart';
-
-
 
 SystemUiOverlayStyle darkSystemUiOverlayStyle = const SystemUiOverlayStyle(
   statusBarColor: AppDarkColor.bgBackground,
@@ -20,8 +17,8 @@ ThemeData darkMode = ThemeData(
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: AppDarkColor.bgBackground,
       type: BottomNavigationBarType.fixed,
-      selectedItemColor: AppDarkColor.textDefault,
-      unselectedItemColor: AppDarkColor.textSecondary,
+      selectedItemColor: AppDarkColor.brandPrimary,
+      unselectedItemColor: AppDarkColor.brandSecondary,
       showUnselectedLabels: true),
   appBarTheme: const AppBarTheme(
       color: AppDarkColor.bgBackground,

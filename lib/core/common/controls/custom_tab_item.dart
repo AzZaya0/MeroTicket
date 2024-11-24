@@ -26,14 +26,12 @@ class CustomTabItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(999),
             color: newIndex == neededIndex
                 ? Colors.transparent
-                : customColors.textDefault),
+                : customColors.primary),
         child: CustomText(
             text: title,
             size: 12.h,
             fontWeight: FontWeight.w400,
-            color: newIndex == neededIndex
-                ? Colors.white
-                : customColors.borderDefault
+            color: newIndex == neededIndex ? Colors.white : customColors.primary
             // : AppColor.greyText,
             ),
       ),

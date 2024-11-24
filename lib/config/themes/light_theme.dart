@@ -15,8 +15,8 @@ ThemeData lightMode = ThemeData(
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     backgroundColor: AppLightColor.bgBackground,
     type: BottomNavigationBarType.fixed,
-    selectedItemColor: AppLightColor.textDefault,
-    unselectedItemColor: AppLightColor.textSecondary,
+    // selectedItemColor: AppLightColor.textDefault,
+    // unselectedItemColor: AppLightColor.textSecondary,
     showUnselectedLabels: true,
   ),
   appBarTheme: const AppBarTheme(

@@ -1,20 +1,16 @@
-// import 'package:get_it/get_it.dart';
+import 'package:get_it/get_it.dart';
+import 'package:template/config/themes/cubit/theme_cubit.dart';
+import 'package:template/feature/auth/injection/default_injection_container.dart';
 
+final locator = GetIt.instance;
 void setupDependencyInjection() {
   // ? AnotherInjectionContainer().register();
   /// Example of [AnotherInjectionContainer] flunction
   ///
-  /// class AnotherInjectionContainer {
-  ///   var get = GetIt.instance;
-  ///
-  ///   void register() {
-  ///     get.registerLazySingleton(
-  ///       () => SomeClass(
-  ///         someparamater: get<SomeAnotherClass>(),
-  ///       ),
-  ///     );
-  ///   }
-  /// }
+
+  locator.registerSingleton(ThemeCubit());
+
+  AnotherInjectionContainer().register();
 
   /// `GetIt.instance.registerLazySingleton(() => SomeClass());` is registering a lazy singleton
   /// instance of the `SomeClass` class in the dependency injection container provided by the `GetIt`

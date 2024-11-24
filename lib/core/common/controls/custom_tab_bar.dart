@@ -29,13 +29,13 @@ class CustomTabBar extends StatelessWidget {
         buttonMargin: EdgeInsets.only(left: 16.h, bottom: 10.h),
         contentPadding: EdgeInsets.symmetric(horizontal: 12.h),
         labelStyle: GoogleFonts.poppins(
-          color: appColor.brandPrimary,
+          color: appColor.primary,
           fontSize: 14.h,
         ),
         backgroundColor: appColor.bgBackground,
-        unselectedBackgroundColor: appColor.borderSoft,
+        unselectedBackgroundColor: appColor.bgBackground,
         unselectedLabelStyle: GoogleFonts.poppins(
-          color: appColor.borderDefault,
+          color: appColor.brandSecondary,
           fontSize: 14.h,
         ),
         borderColor: Colors.transparent,

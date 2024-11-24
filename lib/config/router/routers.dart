@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:template/feature/auth/presentaion/pages/login_page.dart';
 
 import '../../feature/splash/presentaion/pages/splash_screen.dart';
 
@@ -13,5 +14,6 @@ class AppRoutes {
   /// with a `SplashScreen` widget builder function.
   static final Map<String, Widget Function(BuildContext)> routes = {
     initialRoute: (context) => const SplashScreen(),
+    loginRoute: (context) => const LoginPage(),
   };
 }

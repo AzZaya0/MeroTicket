@@ -93,7 +93,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       decoration: InputDecoration(
         prefixIcon: widget.prefix, filled: true, // Set filled to true
 
-        fillColor: widget.filledColor ?? appColor.borderSoft,
+        fillColor: widget.filledColor ?? appColor.bgBackground,
         contentPadding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 12.h),
         hintText: widget.hintText,
 
@@ -102,7 +102,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               fontSize: 14.h,
               fontFamily: GoogleFonts.poppins().fontFamily,
               fontWeight: FontWeight.w400,
-              color: widget.hintColor ?? appColor.borderDefault,
+              color: widget.hintColor ?? appColor.bgBackground,
             ),
         suffixIcon: widget.isPasswordField
             ? GestureDetector(
@@ -110,7 +110,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 child: Container(
                   padding: EdgeInsets.all(12.h),
                   child: SvgPicture.asset(
-                    icon,
+                    icon, height: 50, width: 50,
                     colorFilter: const ColorFilter.mode(
                         Color(0xff8d9aab), BlendMode.srcIn),
                     // height: 2,

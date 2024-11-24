@@ -3,6 +3,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:template/config/router/routers.dart';
 import 'package:template/core/common/loading_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -24,6 +25,8 @@ class _SplashScreenState extends State<SplashScreen> {
     // Wait for 2 seconds
     await Future.delayed(const Duration(seconds: 2));
     log("SplashScreen: initialDataFetch");
+    Navigator.of(context)
+          .pushNamedAndRemoveUntil(AppRoutes.loginRoute, (route) => false);
   }
 
   @override

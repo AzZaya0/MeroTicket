@@ -20,13 +20,15 @@ class MainNavBar extends StatefulWidget {
 class _MainNavBarState extends State<MainNavBar> {
   var screens = [
     const HomePage(),
+    const HomePage(),
+    const HomePage(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        children: [1
+        children: [
           BlocBuilder<MainNavCubit, MainNavState>(
             builder: (context, state) {
               return Center(

@@ -26,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(const Duration(seconds: 2));
     log("SplashScreen: initialDataFetch");
     Navigator.of(context)
-          .pushNamedAndRemoveUntil(AppRoutes.loginRoute, (route) => false);
+        .pushNamedAndRemoveUntil(AppRoutes.mainNavRoute, (route) => false);
   }
 
   @override

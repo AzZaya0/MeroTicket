@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:template/feature/auth/presentaion/pages/login_page.dart';
 import 'package:template/feature/auth/presentaion/pages/sign_up_page.dart';
+import 'package:template/feature/home/bottom_nav_bar/main_nav_bar.dart';
 
 import '../../feature/splash/presentaion/pages/splash_screen.dart';
 
 class AppRoutes {
   static const String initialRoute = '/';
   static const String loginRoute = '/login';
+  static const String mainNavRoute = '/navroute';
   static const String signUpRoute = '/signUpRoute';
 
   static const String homeRoute = '/home';
@@ -18,5 +20,6 @@ class AppRoutes {
     initialRoute: (context) => const SplashScreen(),
     loginRoute: (context) => const LoginPage(),
     signUpRoute: (context) => const SignUpPage(),
+    mainNavRoute: (context) => const MainNavBar(),
   };
 }

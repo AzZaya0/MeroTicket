@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:template/feature/auth/presentaion/pages/login_page.dart';
+import 'package:template/feature/auth/presentaion/pages/sign_up_page.dart';
 
 import '../../feature/splash/presentaion/pages/splash_screen.dart';
 
 class AppRoutes {
   static const String initialRoute = '/';
   static const String loginRoute = '/login';
-  static const String signupRoute = '/signup';
+  static const String signUpRoute = '/signUpRoute';
+
   static const String homeRoute = '/home';
 
   /// The `static final Map<String, Widget Function(BuildContext)> routes` is a map that associates
@@ -15,5 +17,6 @@ class AppRoutes {
   static final Map<String, Widget Function(BuildContext)> routes = {
     initialRoute: (context) => const SplashScreen(),
     loginRoute: (context) => const LoginPage(),
+    signUpRoute: (context) => const SignUpPage(),
   };
 }

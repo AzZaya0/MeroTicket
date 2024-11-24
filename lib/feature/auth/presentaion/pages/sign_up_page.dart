@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:template/config/router/routers.dart';
 import 'package:template/config/themes/themeExtension/theme_extension.dart';
+import 'package:template/core/app.dart';
 import 'package:template/core/utils/extension.dart';
 
 import '../../../../core/common/controls/custom_button.dart';
@@ -11,14 +11,14 @@ import '../../../../core/common/controls/custom_text.dart';
 import '../../../../core/common/controls/custom_textfield.dart';
 import '../state/login_cubit.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignUpPageState extends State<SignUpPage> {
   late TextEditingController emailController;
   late TextEditingController passwordController;
   @override
@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Gap(30.h),
-                    LoginTextfieldSection(
+                    SignUpTextfieldSection(
                         title: 'Phone',
                         textInputType: TextInputType.phone,
                         hintText: "Enter your phone",
@@ -66,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                         },
                         controller: emailController),
                     Gap(16.h),
-                    LoginTextfieldSection(
+                    SignUpTextfieldSection(
                         title: 'Password',
                         hintText: "Enter your password",
                         validator: (value) {
@@ -96,19 +96,44 @@ class _LoginPageState extends State<LoginPage> {
         passwordController: passwordController);
   }
 
+  // Widget dividerSection() {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //     crossAxisAlignment: CrossAxisAlignment.center,
+  //     children: [
+  //       const Expanded(
+  //           child: Divider(
+  //         color: Color(0xFFD5DBE2),
+  //       )),
+  //       Gap(16.w),
+  //       CustomText(
+  //         color: appColors(context).primaryBlue,
+  //         text: "or",
+  //         size: 16.h,
+  //         fontWeight: FontWeight.w400,
+  //       ),
+  //       Gap(16.w),
+  //       const Expanded(
+  //           child: Divider(
+  //         color: Color(0xFFD5DBE2),
+  //       )),
+  //     ],
+  //   ).addMargin(EdgeInsets.symmetric(vertical: 24.h));
+  // }
+
   Widget topTitlesSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomText(
-          text: "Login",
+          text: "Sign UP",
           size: 36.h,
           color: appColors(context).gray800,
           fontWeight: FontWeight.w600,
         ),
         // Gap(12.h),
         CustomText(
-          text: "Let’s Sign you in.",
+          text: "Let’s Sign you Up.",
           size: 14.h,
           color: appColors(context).gray800,
           fontWeight: FontWeight.w400,
@@ -118,8 +143,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-class LoginTextfieldSection extends StatelessWidget {
-  const LoginTextfieldSection({
+class SignUpTextfieldSection extends StatelessWidget {
+  const SignUpTextfieldSection({
     super.key,
     required this.title,
     required this.hintText,
@@ -184,7 +209,7 @@ class ButtonSection extends StatelessWidget {
               onTap: () {
                 if (formKey?.currentState?.validate() ?? false) {
                   if (state is LoginLoading) {
-                    print("login loading plz wait ");
+                    print("Sighing Up plz wait ");
                   } else {
                     // context.read<LoginCubit>().loginToBraimy(context,
                     //     phone: emailController.text.trim().toString(),
@@ -194,7 +219,7 @@ class ButtonSection extends StatelessWidget {
               },
               overlayColor: appColors(context).gray600,
               child: CustomText(
-                text: (state is LoginLoading) ? 'Logging in....' : 'Login',
+                text: (state is LoginLoading) ? 'Signing in....' : 'Sign Up',
                 color: Colors.white,
                 size: 16.h,
                 fontWeight: FontWeight.w400,
@@ -202,30 +227,6 @@ class ButtonSection extends StatelessWidget {
             );
           },
         ).addMargin(EdgeInsets.symmetric(vertical: 24.h)),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CustomText(
-              text: 'Sign up ?',
-              color: appColors(context).gray400,
-              size: 12.h,
-              fontWeight: FontWeight.w400,
-            ),
-            Gap(8.w),
-            InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, AppRoutes.signUpRoute);
-              },
-              child: CustomText(
-                text: 'Create Account',
-                textDecoration: TextDecoration.underline,
-                color: appColors(context).orange600,
-                size: 12.h,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ],
-        )
       ],
     );
   }

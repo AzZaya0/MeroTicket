@@ -92,7 +92,7 @@ class AppColors extends ThemeExtension<AppColors> {
       gray400: Color.lerp(gray400, other.gray400, t),
       gray600: Color.lerp(gray600, other.gray600, t),
       gray800: Color.lerp(gray800, other.gray800, t),
-      primaryBlue: Color.lerp(primaryBlue, other.primaryBlue, t),
+      primaryBlue: Color.lerp(primaryBlue, other.orange600, t),
       orange600: Color.lerp(orange600, other.orange600, t),
     );
   }

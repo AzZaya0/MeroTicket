@@ -102,9 +102,6 @@ class HomePage extends StatelessWidget {
                           child: Image.network(
                               'https://i.pinimg.com/236x/25/fe/c6/25fec6029badf2787edf24a886e9b979.jpg'),
                         ),
-                        // Image.network(
-                        //   'https://i.pinimg.com/236x/25/fe/c6/25fec6029badf2787edf24a886e9b979.jpg',
-                        // ),
                         Gap(10.h),
                         Card(
                           color: appColors(context).orange600,

@@ -8,7 +8,7 @@ import '../../feature/splash/presentaion/pages/splash_screen.dart';
 class AppRoutes {
   static const String initialRoute = '/';
   static const String loginRoute = '/login';
-  static const String mainNavRoute = '/navroute';
+  static const String mainNavRoute = '/navRoute';
   static const String signUpRoute = '/signUpRoute';
 
   static const String homeRoute = '/home';

@@ -4,9 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:template/config/themes/themeExtension/theme_extension.dart';
+import 'package:template/feature/event/presentaion/pages/my_events.dart';
+import 'package:template/feature/event/presentaion/pages/my_ticket.dart';
 
 import 'package:template/feature/home/bottom_nav_bar/cubit/main_nav_cubit.dart';
 import 'package:template/feature/home/home.dart';
+import 'package:template/feature/settings/presentaion/pages/settings.dart';
 
 import '../../../core/common/controls/custom_text.dart';
 
@@ -20,8 +23,9 @@ class MainNavBar extends StatefulWidget {
 class _MainNavBarState extends State<MainNavBar> {
   var screens = [
     const HomePage(),
-    const HomePage(),
-    const HomePage(),
+    const MyTicket(),
+    const MyEvents(),
+    const SettingsPage(),
   ];
 
   @override
@@ -39,7 +43,7 @@ class _MainNavBarState extends State<MainNavBar> {
         ],
       ),
       bottomNavigationBar: Container(
-        height: 66.h,
+        height: 50.h,
         // width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
             border:
@@ -50,12 +54,9 @@ class _MainNavBarState extends State<MainNavBar> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             navbarColumn(context, 0, 'Home'),
-            navbarColumn(context, 1, 'Learnings'),
-            //uncomment this after publishing
-            navbarColumn(context, -1, '', isScanFeature: true),
-            navbarColumn(context, 2, 'BigB'),
-            // navbarColumn(context, SvgAssets.navSearchIcon, 2, 'Explore'),
-            navbarColumn(context, 3, 'Discover'),
+            navbarColumn(context, 1, 'MyTickets'),
+            navbarColumn(context, 2, 'MyEvents'),
+            navbarColumn(context, 3, 'Settings'),
           ],
         ),
       ),

@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:template/config/themes/themeExtension/theme_extension.dart';
-import 'package:template/feature/event/presentaion/pages/my_events.dart';
-import 'package:template/feature/event/presentaion/pages/my_ticket.dart';
+import 'package:template/feature/event/presentation/pages/my_events.dart';
+import 'package:template/feature/event/presentation/pages/my_ticket.dart';
 
 import 'package:template/feature/home/bottom_nav_bar/cubit/main_nav_cubit.dart';
 import 'package:template/feature/home/home.dart';

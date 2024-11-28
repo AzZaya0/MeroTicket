@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 class AppLightColor {
   static const primaryColor = Color(0xffffffff);
   /*Brand COLORS*/
-  static const primary = Color(0xff0a0a0a);
+  static const primary = Color(0xff8c97ff);
   static const brandSecondary = Color(0xffffffff);
 
+  static const black = Color(0xff0a0a0a);
   /*Background COLORS*/
   static const bgBackground = Color(0xffffffff);
 
@@ -26,6 +27,7 @@ class AppLightColor {
 class AppDarkColor {
   static const brandPrimary = Color(0xffffffff);
   static const brandSecondary = Color(0xff0a0a0a);
+  static const black = Color(0xffafafaf);
 
   static const bgBackground = Color(0xff181818);
   static const bgTeritary = Color(0xff242424);

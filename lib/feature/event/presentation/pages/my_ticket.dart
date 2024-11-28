@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:template/core/common/controls/custom_text.dart';
 
+import '../../../../config/constants/asset_manager.dart';
+import '../../../../config/themes/themeExtension/theme_extension.dart';
+
 class MyTicket extends StatelessWidget {
   const MyTicket({super.key});
 
@@ -10,10 +13,17 @@ class MyTicket extends StatelessWidget {
       appBar: AppBar(),
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
-        child: const Column(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [CustomText(text: 'Ticket not found')],
+          children: [
+            lottieLoader(
+                ctx: context, lottieAsset: LottieAssets.myTicketLottie),
+            CustomText(
+              text: 'No Tickets',
+              color: appColors(context).primary,
+            ),
+          ],
         ),
       ),
     );

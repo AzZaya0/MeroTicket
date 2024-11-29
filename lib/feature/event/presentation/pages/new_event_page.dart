@@ -128,7 +128,17 @@ class _NewEventPageState extends State<NewEventPage> {
                         controller: addressController,
                         filledColor: appColors(context).bgBackground,
                       ),
-                      Gap(16.h),
+                    ],
+                  ).addMargin(EdgeInsets.all(8.h)),
+                ),
+                Gap(16.h),
+                Container(
+                  decoration: BoxDecoration(
+                      color: appColors(context).gray100,
+                      borderRadius: BorderRadius.circular(8.h)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
                       CustomText(
                         text: 'Date & Time of event ',
                         color: appColors(context).gray800,
@@ -142,13 +152,6 @@ class _NewEventPageState extends State<NewEventPage> {
                   ).addMargin(EdgeInsets.all(8.h)),
                 ),
                 Gap(16.h),
-                CustomText(
-                  text: 'Add vendor',
-                  color: appColors(context).black,
-                  size: 18.h,
-                  fontWeight: FontWeight.w600,
-                ),
-                Gap(16.h),
                 Container(
                   decoration: BoxDecoration(
                       color: appColors(context).gray100,
@@ -157,10 +160,10 @@ class _NewEventPageState extends State<NewEventPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomText(
-                        text: 'Search vendors ',
+                        text: 'Add Vendor',
                         color: appColors(context).gray800,
-                        size: 14.h,
-                        fontWeight: FontWeight.w400,
+                        size: 16.h,
+                        fontWeight: FontWeight.w500,
                       ),
                       Gap(4.h),
                       CustomTextField(
@@ -177,8 +180,9 @@ class _NewEventPageState extends State<NewEventPage> {
                         itemCount: 5,
                         itemBuilder: (BuildContext context, int index) {
                           return Container(
-                            height: 50.h,
+                            height: 80.h,
                             width: 150.h,
+                            padding: EdgeInsets.all(8.h),
                             margin: EdgeInsets.only(bottom: 8.h),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8.h),
@@ -188,9 +192,26 @@ class _NewEventPageState extends State<NewEventPage> {
                                 Gap(8.h),
                                 const CircleAvatar(),
                                 Gap(8.h),
-                                CustomText(
-                                  text: '9819027222',
-                                  color: appColors(context).gray800,
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    CustomText(
+                                      text: 'Mero Vision inc',
+                                      color: appColors(context).gray800,
+                                      size: 14.h,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    CustomText(
+                                      text: 'Location',
+                                      color: appColors(context).gray800,
+                                      size: 12.h,
+                                    ),
+                                    CustomText(
+                                      text: 'Category',
+                                      color: appColors(context).gray800,
+                                      size: 12.h,
+                                    ),
+                                  ],
                                 ),
                                 const Spacer(),
                                 IconButton(

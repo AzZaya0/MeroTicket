@@ -108,6 +108,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
             ? GestureDetector(
                 onTap: isTapped,
                 child: Container(
+                  height: 50,
+                  width: 50,
                   padding: EdgeInsets.all(12.h),
                   child: SvgPicture.asset(
                     icon, height: 50, width: 50,

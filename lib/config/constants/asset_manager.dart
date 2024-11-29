@@ -7,9 +7,8 @@ class SvgAssets {
   static String profilePlaceholder =
       '$svgBasePath/commons/profile_placeholder.svg';
   static String logoutModuleEyeClosed =
-      '$svgBasePath/commons/profile_placeholder.svg';
-  static String logoutModuleEye =
-      '$svgBasePath/commons/profile_placeholder.svg';
+      '$svgBasePath/commons/logout_module_eye_closed.svg';
+  static String logoutModuleEye = '$svgBasePath/commons/logout_module_eye.svg';
 }
 
 class PngAssets {
@@ -36,12 +35,13 @@ DotLottieLoader lottieLoader(
     {required BuildContext ctx,
     required String lottieAsset,
     double? height,
+    BoxFit? fit,
     double? width}) {
   return DotLottieLoader.fromAsset(lottieAsset,
       frameBuilder: (BuildContext ctx, DotLottie? dotlottie) {
     if (dotlottie != null) {
       return Lottie.memory(dotlottie.animations.values.single,
-          height: height, width: width);
+          fit: fit, height: height, width: width);
     } else {
       return Container();
     }

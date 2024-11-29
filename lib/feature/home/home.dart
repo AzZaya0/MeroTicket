@@ -109,7 +109,7 @@ class HomePage extends StatelessWidget {
                   clipBehavior: Clip.antiAlias,
                   // width: 300.h,
                   decoration: BoxDecoration(
-                      color: appColors(context).gray400,
+                      color: appColors(context).gray800,
                       borderRadius: BorderRadius.circular(22)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,13 +117,19 @@ class HomePage extends StatelessWidget {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(20),
                         child: Image.network(
-                            'https://i.pinimg.com/236x/25/fe/c6/25fec6029badf2787edf24a886e9b979.jpg'),
+                          'https://i.pinimg.com/236x/25/fe/c6/25fec6029badf2787edf24a886e9b979.jpg',
+                          height: 150.h,
+                          width: 250.h,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                       Gap(10.h),
                       Card(
-                        color: appColors(context).orange600,
-                        child: const CustomText(text: 'Art').addPadding(
-                            const EdgeInsets.symmetric(horizontal: 15)),
+                        color: appColors(context).primary,
+                        child: CustomText(
+                          text: 'Art',
+                          color: appColors(context).bgBackground,
+                        ).addPadding(EdgeInsets.symmetric(horizontal: 15.h)),
                       ),
                       Gap(4.h),
                       const CustomText(

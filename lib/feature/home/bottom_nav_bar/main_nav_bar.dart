@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:template/config/themes/themeExtension/theme_extension.dart';
+import 'package:template/feature/event/presentation/pages/events_page.dart';
 import 'package:template/feature/event/presentation/pages/my_events.dart';
 import 'package:template/feature/event/presentation/pages/my_ticket.dart';
 
@@ -25,6 +26,7 @@ class _MainNavBarState extends State<MainNavBar> {
     const HomePage(),
     const MyTicket(),
     const MyEvents(),
+    // const EventsPage(),
     const SettingsPage(),
   ];
 

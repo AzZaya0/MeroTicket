@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:template/config/themes/themeExtension/theme_extension.dart';
+import 'package:template/core/common/controls/pick_image/image_picker_cubit.dart';
 import 'package:template/core/utils/extension.dart';
 
 import '../../../../core/common/controls/custom_button.dart';
@@ -10,14 +13,14 @@ import '../../../../core/common/controls/custom_text.dart';
 import '../../../../core/common/controls/custom_textfield.dart';
 import '../state/login_cubit.dart';
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+class VendorSignUp extends StatefulWidget {
+  const VendorSignUp({super.key});
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<VendorSignUp> createState() => _VendorSignUpState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _VendorSignUpState extends State<VendorSignUp> {
   late TextEditingController nameController;
   late TextEditingController addressController;
   late TextEditingController emailController;
@@ -45,6 +48,7 @@ class _SignUpPageState extends State<SignUpPage> {
     super.dispose();
   }
 
+  File? imageFile;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,18 +68,85 @@ class _SignUpPageState extends State<SignUpPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Gap(30.h),
+                    Row(
+                      children: [
+                        (imageFile != null)
+                            ? Image.file(
+                                imageFile!,
+                                height: 100.h,
+                                width: 100.h,
+                              )
+                            : Container(),
+                        Gap(16.h),
+                        CustomButton(
+                          height: 40.h,
+                          radius: 8.h,
+                          width: 200.h,
+                          padding: const EdgeInsets.all(0),
+                          color: appColors(context).gray400,
+                          onTap: () async {
+                            var file = await context
+                                .read<ImagePickerCubit>()
+                                .getImage(context: context);
+
+                            if (file != null) {
+                              imageFile = null;
+                              imageFile = await context
+                                  .read<ImagePickerCubit>()
+                                  .compressImage(file);
+                            }
+                            setState(() {});
+                          },
+                          overlayColor: appColors(context).gray600,
+                          child: CustomText(
+                            text: 'SelectImage',
+                            color: Colors.white,
+                            size: 16.h,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Gap(16.h),
                     SignUpTextfieldSection(
-                        title: 'Full Name',
+                        title: 'Institution Name',
                         textInputType: TextInputType.phone,
-                        hintText: "Enter your name",
+                        hintText: "Enter your Institution Name",
                         validator: (value) {
                           if (value?.trim().isEmpty ?? false) {
-                            return "Please enter your Full Name!";
+                            return "Please enter your Institution Name!";
                           } else {
                             return null;
                           }
                         },
                         controller: nameController),
+                    Gap(16.h),
+                    SignUpTextfieldSection(
+                        title: 'Owner Name',
+                        textInputType: TextInputType.phone,
+                        hintText: "Enter your Owner Name",
+                        validator: (value) {
+                          if (value?.trim().isEmpty ?? false) {
+                            return "Please enter your Institution Name!";
+                          } else {
+                            return null;
+                          }
+                        },
+                        controller: nameController),
+                    Gap(16.h),
+                    SignUpTextfieldSection(
+                        title: 'Organization Category',
+                        textInputType: TextInputType.phone,
+                        hintText: "Enter your Organization Category",
+                        validator: (value) {
+                          if (value?.trim().isEmpty ?? false) {
+                            return "Please enter your Institution Name!";
+                          } else {
+                            return null;
+                          }
+                        },
+                        controller: nameController),
+                    Gap(16.h),
                     SignUpTextfieldSection(
                         title: 'Email',
                         textInputType: TextInputType.emailAddress,
@@ -163,7 +234,7 @@ class _SignUpPageState extends State<SignUpPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomText(
-          text: "Sign UP",
+          text: "Vendor Sign UP ",
           size: 36.h,
           color: appColors(context).gray800,
           fontWeight: FontWeight.w600,
@@ -254,21 +325,7 @@ class ButtonSection extends StatelessWidget {
               color: const Color(0xff2656FF),
               onTap: () {
                 if (formKey?.currentState?.validate() ?? false) {
-                  context.read<LoginCubit>().createAccount(
-                      context: context,
-                      name: nameController.text.toString(),
-                      email: emailController.text.toString(),
-                      phone: phoneController.text.toString(),
-                      password: passwordController.text.toString(),
-                      address: addressController.text.toString(),
-                      location: 'location');
-                  // if (state is LoginLoading) {
-                  print("Sighing Up plz wait ");
-                  // } else {
-                  //   // context.read<LoginCubit>().loginToBraimy(context,
-                  //   //     phone: emailController.text.trim().toString(),
-                  //   //     password: passwordController.text.trim().toString());
-                  // }
+                  // compressImage
                 }
               },
               overlayColor: appColors(context).gray600,

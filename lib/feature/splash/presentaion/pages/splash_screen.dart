@@ -23,10 +23,10 @@ class _SplashScreenState extends State<SplashScreen> {
   /// Perform some data fetcing and validation here
   Future<void> initialDataFetch() async {
     // Wait for 2 seconds
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 3));
     log("SplashScreen: initialDataFetch");
     Navigator.of(context)
-        .pushNamedAndRemoveUntil(AppRoutes.mainNavRoute, (route) => false);
+        .pushNamedAndRemoveUntil(AppRoutes.loginRoute, (route) => false);
   }
 
   @override
@@ -37,4 +37,4 @@ class _SplashScreenState extends State<SplashScreen> {
           LoadingScreen(),
     );
   }
-} 
+}

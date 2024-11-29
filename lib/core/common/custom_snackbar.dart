@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../config/constants/constants.dart';
 
-void kShowSnackBar(
-  String message, {
+void kShowSnackBar({
+  required String message,
   BuildContext? context,
   GlobalKey<ScaffoldState>? scaffoldKey,
   Duration duration = const Duration(milliseconds: 1200),

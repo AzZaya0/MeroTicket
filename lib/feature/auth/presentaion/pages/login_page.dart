@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:template/config/router/routers.dart';
 import 'package:template/config/themes/themeExtension/theme_extension.dart';
 import 'package:template/core/utils/extension.dart';
+import 'package:template/feature/auth/presentaion/pages/sign_up_page.dart';
 
 import '../../../../core/common/controls/custom_button.dart';
 import '../../../../core/common/controls/custom_text.dart';
@@ -40,7 +41,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      backgroundColor: appColors(context).gray100,
+      appBar: AppBar(backgroundColor: appColors(context).gray100),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Form(
@@ -54,9 +56,9 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     Gap(30.h),
                     LoginTextfieldSection(
-                        title: 'Phone',
-                        textInputType: TextInputType.phone,
-                        hintText: "Enter your phone",
+                        title: 'Email',
+                        textInputType: TextInputType.emailAddress,
+                        hintText: "Enter your Email",
                         validator: (value) {
                           if (value?.trim().isEmpty ?? false) {
                             return "Please enter your phone number!";
@@ -183,18 +185,23 @@ class ButtonSection extends StatelessWidget {
               color: const Color(0xff2656FF),
               onTap: () {
                 if (formKey?.currentState?.validate() ?? false) {
-                  if (state is LoginLoading) {
-                    print("login loading plz wait ");
-                  } else {
-                    // context.read<LoginCubit>().loginToBraimy(context,
-                    //     phone: emailController.text.trim().toString(),
-                    //     password: passwordController.text.trim().toString());
-                  }
+                  context.read<LoginCubit>().login(
+                      context: context,
+                      email: emailController.text.toString(),
+                      password: passwordController.text.toString());
+
+                  // if (state is LoginLoading) {
+                  //   print("login loading plz wait ");
+                  // } else {
+                  //   // context.read<LoginCubit>().loginToBraimy(context,
+                  //   //     phone: emailController.text.trim().toString(),
+                  //   //     password: passwordController.text.trim().toString());
+                  // }
                 }
               },
               overlayColor: appColors(context).gray600,
               child: CustomText(
-                text: (state is LoginLoading) ? 'Logging in....' : 'Login',
+                text: (state.loginStatus== LoginStatus.loading) ? 'Logging in....' : 'Login',
                 color: Colors.white,
                 size: 16.h,
                 fontWeight: FontWeight.w400,
@@ -225,6 +232,24 @@ class ButtonSection extends StatelessWidget {
               ),
             ),
           ],
+        ),
+        Gap(50.h),
+        CustomButton(
+          height: 40.h,
+          radius: 8.h,
+          width: 200.h,
+          padding: const EdgeInsets.all(0),
+          color: appColors(context).gray400,
+          onTap: () {
+            Navigator.of(context).pushNamed(AppRoutes.vendorSignUpRoute);
+          },
+          overlayColor: appColors(context).gray600,
+          child: CustomText(
+            text: 'Create Vendor Account',
+            color: Colors.white,
+            size: 16.h,
+            fontWeight: FontWeight.w400,
+          ),
         )
       ],
     );

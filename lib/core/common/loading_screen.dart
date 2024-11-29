@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../../config/constants/constants.dart';
+import 'package:template/config/constants/asset_manager.dart';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({super.key});
@@ -12,11 +11,12 @@ class LoadingScreen extends StatefulWidget {
 class _LoadingScreenState extends State<LoadingScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: CircularProgressIndicator(
-        backgroundColor: KColors.blackColor,
-        color: KColors.accentColor,
-      ),
+    return Center(
+      child: lottieLoader(
+          ctx: context,
+          lottieAsset: LottieAssets.ticketLoadingLottie,
+          fit: BoxFit.fitHeight,
+          height: 200),
     );
   }
 }

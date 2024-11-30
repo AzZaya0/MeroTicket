@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:template/config/themes/themeExtension/theme_extension.dart';
-import 'package:template/core/app.dart';
+
 import 'package:template/core/common/controls/custom_text.dart';
 import 'package:template/core/common/controls/custom_textfield.dart';
 import 'package:template/core/utils/extension.dart';
@@ -13,7 +13,10 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      backgroundColor: appColors(context).gray100,
+      appBar: AppBar(
+        backgroundColor: appColors(context).gray100,
+      ),
       body: SafeArea(
           child: SingleChildScrollView(
         child: Column(
@@ -26,7 +29,7 @@ class HomePage extends StatelessWidget {
             Card(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30)),
-              color: appColors(context).gray400,
+              color: appColors(context).bgBackground,
               child: Column(
                 children: [
                   Gap(18.h),
@@ -84,7 +87,7 @@ class HomePage extends StatelessWidget {
         Gap(24.h),
         CustomText(
           text: title,
-          color: appColors(context).primary,
+          color: appColors(context).gray800,
         ),
         Row(
           children: [
@@ -109,15 +112,15 @@ class HomePage extends StatelessWidget {
                   clipBehavior: Clip.antiAlias,
                   // width: 300.h,
                   decoration: BoxDecoration(
-                      color: appColors(context).gray800,
-                      borderRadius: BorderRadius.circular(22)),
+                      color: appColors(context).bgBackground,
+                      borderRadius: BorderRadius.circular(12)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(8),
                         child: Image.network(
-                          'https://i.pinimg.com/236x/25/fe/c6/25fec6029badf2787edf24a886e9b979.jpg',
+                          'https://vancouver.ca/images/cov/feature/crowd-hands-clapping.jpg',
                           height: 150.h,
                           width: 250.h,
                           fit: BoxFit.cover,
@@ -132,18 +135,21 @@ class HomePage extends StatelessWidget {
                         ).addPadding(EdgeInsets.symmetric(horizontal: 15.h)),
                       ),
                       Gap(4.h),
-                      const CustomText(
+                      CustomText(
                         text: 'The Planter Show',
-                        size: 20,
-                        color: Colors.white,
+                        size: 20.h,
+                        color: appColors(context).gray800,
                       ),
-                      Gap(4.h),
-                      const CustomText(
+                      CustomText(
                         text: 'September 24',
-                        color: Colors.white,
-                        size: 14,
+                        color: appColors(context).gray800,
+                        size: 12.h,
                       ),
-                      Gap(6.h)
+                      CustomText(
+                        text: 'by meroVision.inc',
+                        color: appColors(context).gray800,
+                        size: 14.h,
+                      ),
                     ],
                   ).addPadding(const EdgeInsets.all(10)),
                 ).addMargin(const EdgeInsets.only(

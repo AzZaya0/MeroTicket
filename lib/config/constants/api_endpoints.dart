@@ -13,6 +13,15 @@ class ApiEndpoints {
 }
 
 class PostApiEndPoints {
-  static const String createAccount = "${ApiEndpoints.baseURL}/create-account";
   static const String login = "${ApiEndpoints.baseURL}/login";
+  static const String createAccount = "${ApiEndpoints.baseURL}/create-account";
+  static const String createVendorAccount =
+      "${ApiEndpoints.baseURL}/vendor-signup";
+  static const String event = "${ApiEndpoints.baseURL}/event";
+}
+
+class GetApiEndPoints {
+  static const String organizationCategory = "${ApiEndpoints.baseURL}/category";
+  static const String searchVendor = "${ApiEndpoints.baseURL}/vendors";
+  static const String myEvents = "${ApiEndpoints.baseURL}/my-events";
 }

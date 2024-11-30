@@ -22,6 +22,7 @@ class VendorSignUp extends StatefulWidget {
 
 class _VendorSignUpState extends State<VendorSignUp> {
   late TextEditingController nameController;
+  late TextEditingController ownerNameController;
   late TextEditingController addressController;
   late TextEditingController emailController;
   late TextEditingController phoneController;
@@ -30,6 +31,7 @@ class _VendorSignUpState extends State<VendorSignUp> {
   @override
   void initState() {
     nameController = TextEditingController();
+    ownerNameController = TextEditingController();
     emailController = TextEditingController();
     phoneController = TextEditingController();
     addressController = TextEditingController();
@@ -132,20 +134,65 @@ class _VendorSignUpState extends State<VendorSignUp> {
                             return null;
                           }
                         },
-                        controller: nameController),
+                        controller: ownerNameController),
                     Gap(16.h),
-                    SignUpTextfieldSection(
-                        title: 'Organization Category',
-                        textInputType: TextInputType.phone,
-                        hintText: "Enter your Organization Category",
-                        validator: (value) {
-                          if (value?.trim().isEmpty ?? false) {
-                            return "Please enter your Institution Name!";
-                          } else {
-                            return null;
-                          }
-                        },
-                        controller: nameController),
+                    CustomText(
+                      text: 'Organization Category',
+                      size: 14.h,
+                      fontWeight: FontWeight.w500,
+                      color: appColors(context).gray800,
+                    ),
+                    BlocBuilder<LoginCubit, LoginState>(
+                      builder: (context, state) {
+                        return Wrap(
+                          children: [
+                            ...List.generate(
+                              state.organizationCategoryModel?.data?.length ??
+                                  0,
+                              (index) {
+                                return InkWell(
+                                  onTap: () {
+                                    context
+                                        .read<LoginCubit>()
+                                        .addNameToCategory(state
+                                                .organizationCategoryModel
+                                                ?.data?[index] ??
+                                            '');
+                                    // setState(() {});
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.all(4.h),
+                                    padding: EdgeInsets.all(4.h),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10.h),
+                                      color: (state.categoryNameList ?? [''])
+                                              .contains(state
+                                                      .organizationCategoryModel
+                                                      ?.data?[index] ??
+                                                  '')
+                                          ? appColors(context).primary
+                                          : appColors(context).bgBackground,
+                                    ),
+                                    child: CustomText(
+                                      text: state.organizationCategoryModel
+                                              ?.data?[index] ??
+                                          '',
+                                      size: 14.h,
+                                      fontWeight: FontWeight.w500,
+                                      color: appColors(context).gray800,
+                                    ),
+                                  ),
+                                );
+                              },
+                            )
+                          ],
+                        );
+                      },
+                    ),
+
+                    ///
+
+                    ///
                     Gap(16.h),
                     SignUpTextfieldSection(
                         title: 'Email',
@@ -212,13 +259,16 @@ class _VendorSignUpState extends State<VendorSignUp> {
                         isPasswordField: true,
                         controller: confirmPassController),
                     ButtonSection(
-                        emailController: emailController,
-                        passwordController: passwordController,
-                        formKey: _formKey,
-                        nameController: nameController,
-                        addressController: addressController,
-                        phoneController: phoneController,
-                        confirmPassController: confirmPassController)
+                      emailController: emailController,
+                      passwordController: passwordController,
+                      formKey: _formKey,
+                      ownerNameController: ownerNameController,
+                      companyNameController: nameController,
+                      addressController: addressController,
+                      phoneController: phoneController,
+                      confirmPassController: confirmPassController,
+                      imageFile: imageFile,
+                    )
                   ],
                 ),
               ],
@@ -298,19 +348,23 @@ class ButtonSection extends StatelessWidget {
     required this.emailController,
     required this.passwordController,
     required this.formKey,
-    required this.nameController,
+    required this.companyNameController,
+    required this.ownerNameController,
     required this.addressController,
     required this.phoneController,
     required this.confirmPassController,
+    this.imageFile,
   }) : super(key: key);
   final TextEditingController emailController;
   final TextEditingController passwordController;
   final GlobalKey<FormState>? formKey;
 
-  final TextEditingController nameController;
+  final TextEditingController companyNameController;
+  final TextEditingController ownerNameController;
   final TextEditingController addressController;
   final TextEditingController phoneController;
   final TextEditingController confirmPassController;
+  final File? imageFile;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -326,6 +380,23 @@ class ButtonSection extends StatelessWidget {
               onTap: () {
                 if (formKey?.currentState?.validate() ?? false) {
                   // compressImage
+                  if (imageFile != null) {
+                    context.read<LoginCubit>().createVendorAccount(
+                        context: context,
+                        name: ownerNameController.text.toString(),
+                        email: emailController.text.toString(),
+                        companyLogo: imageFile!,
+                        organizationName: companyNameController.text.toString(),
+                        organizationCategory: context
+                                .read<LoginCubit>()
+                                .state
+                                .categoryNameList
+                                ?.first ??
+                            '',
+                        phone: phoneController.text.toString(),
+                        password: passwordController.text.toString(),
+                        address: addressController.text.toString());
+                  }
                 }
               },
               overlayColor: appColors(context).gray600,

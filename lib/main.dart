@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'core/app.dart';
 import 'core/bloc/bloc_observer.dart';
@@ -13,6 +14,7 @@ Future<void> runMyApp() async {
   // Paint.enableDithering = true; // Enable dithering for better quality
   Bloc.observer = AppBlocObserver();
   await HiveService().init();
+
   setupDependencyInjection();
   runApp(
     const App(),

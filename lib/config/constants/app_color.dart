@@ -8,7 +8,7 @@ class AppLightColor {
 
   static const black = Color(0xff0a0a0a);
   /*Background COLORS*/
-  static const bgBackground = Color(0xffffffff);
+  static const bgBackground = Color(0xfffafafa);
 
   //shades of grey
   static const Color gray100 = Color(0xFFE4E8E9);

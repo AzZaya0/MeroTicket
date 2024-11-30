@@ -66,7 +66,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     Gap(30.h),
                     SignUpTextfieldSection(
                         title: 'Full Name',
-                        textInputType: TextInputType.phone,
+                        textInputType: TextInputType.emailAddress,
                         hintText: "Enter your name",
                         validator: (value) {
                           if (value?.trim().isEmpty ?? false) {

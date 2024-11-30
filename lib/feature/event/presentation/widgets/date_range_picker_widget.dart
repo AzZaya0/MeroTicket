@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:template/config/themes/themeExtension/theme_extension.dart';
 import 'package:template/core/common/controls/custom_button.dart';
+import 'package:template/feature/event/presentation/state/cubit/event_cubit.dart';
 
 import '../../../../core/common/controls/custom_text.dart';
 
@@ -50,7 +52,7 @@ class _DateRangePickerWidgetState extends State<DateRangePickerWidget> {
     );
 
     if (newDateRange == null) return;
-
+    context.read<EventCubit>().setEventDate(eventDateRange: newDateRange);
     setState(() => dateRange = newDateRange);
   }
 

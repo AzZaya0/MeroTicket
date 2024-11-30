@@ -27,6 +27,7 @@ class _LoginPageState extends State<LoginPage> {
     emailController = TextEditingController();
     passwordController = TextEditingController();
     // checkLogin(context);
+    context.read<LoginCubit>().getCategory(context);
     super.initState();
   }
 
@@ -201,7 +202,9 @@ class ButtonSection extends StatelessWidget {
               },
               overlayColor: appColors(context).gray600,
               child: CustomText(
-                text: (state.loginStatus== LoginStatus.loading) ? 'Logging in....' : 'Login',
+                text: (state.loginStatus == LoginStatus.loading)
+                    ? 'Logging in....'
+                    : 'Login',
                 color: Colors.white,
                 size: 16.h,
                 fontWeight: FontWeight.w400,

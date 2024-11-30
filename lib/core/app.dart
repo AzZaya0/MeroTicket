@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:template/config/themes/cubit/theme_cubit.dart';
 import 'package:template/config/themes/dark_theme.dart';
@@ -36,6 +37,7 @@ class _AppState extends State<App> {
           child: MaterialApp(
               debugShowCheckedModeBanner: false,
               theme: theme,
+              builder: EasyLoading.init(),
               routes: AppRoutes.routes),
         );
       }),

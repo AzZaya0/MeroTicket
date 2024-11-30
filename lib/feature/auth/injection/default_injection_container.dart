@@ -7,7 +7,7 @@ import 'package:template/injection/app_injection_container.dart';
 class LoginInjectionContainer {
   void register() {
     locator.registerLazySingleton<LoginRepo>(
-      () => DefaultLoginRepo(api: locator()),
+      () => DefaultLoginRepo(api: locator(), preferences: locator()),
     );
 
     locator.registerLazySingleton(

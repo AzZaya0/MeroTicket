@@ -1,26 +1,26 @@
 // To parse this JSON data, do
 //
-//     final createAccountModel = createAccountModelFromJson(jsonString);
+//     final vendorCreateAccountModel = vendorCreateAccountModelFromJson(jsonString);
 
 import 'dart:convert';
 
-CreateAccountModel createAccountModelFromJson(String str) =>
-    CreateAccountModel.fromJson(json.decode(str));
+VendorCreateAccountModel vendorCreateAccountModelFromJson(String str) =>
+    VendorCreateAccountModel.fromJson(json.decode(str));
 
-String createAccountModelToJson(CreateAccountModel data) =>
+String vendorCreateAccountModelToJson(VendorCreateAccountModel data) =>
     json.encode(data.toJson());
 
-class CreateAccountModel {
+class VendorCreateAccountModel {
   Data? data;
   String? message;
 
-  CreateAccountModel({
+  VendorCreateAccountModel({
     this.data,
     this.message,
   });
 
-  factory CreateAccountModel.fromJson(Map<String, dynamic> json) =>
-      CreateAccountModel(
+  factory VendorCreateAccountModel.fromJson(Map<String, dynamic> json) =>
+      VendorCreateAccountModel(
         data: json["data"] == null ? null : Data.fromJson(json["data"]),
         message: json["message"],
       );
@@ -36,11 +36,14 @@ class Data {
   String? name;
   String? email;
   String? phone;
-  String? location;
+  dynamic location;
   String? address;
+  String? organizationName;
+  String? organizationCategory;
+  List<String>? role;
   DateTime? createdAt;
   DateTime? updatedAt;
-  List<String>? role;
+  String? organizationLogo;
 
   Data({
     this.id,
@@ -48,10 +51,13 @@ class Data {
     this.email,
     this.phone,
     this.location,
-    this.role,
     this.address,
+    this.organizationName,
+    this.organizationCategory,
+    this.role,
     this.createdAt,
     this.updatedAt,
+    this.organizationLogo,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
@@ -61,15 +67,18 @@ class Data {
         phone: json["phone"],
         location: json["location"],
         address: json["address"],
-        createdAt: json["created_at"] == null
-            ? null
-            : DateTime.parse(json["created_at"]),
+        organizationName: json["organization_name"],
+        organizationCategory: json["organization_category"],
         role: json["role"] == null
             ? []
             : List<String>.from(json["role"]!.map((x) => x)),
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
         updatedAt: json["updated_at"] == null
             ? null
             : DateTime.parse(json["updated_at"]),
+        organizationLogo: json["organization_logo"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -79,8 +88,11 @@ class Data {
         "phone": phone,
         "location": location,
         "address": address,
+        "organization_name": organizationName,
+        "organization_category": organizationCategory,
         "role": role == null ? [] : List<dynamic>.from(role!.map((x) => x)),
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
+        "organization_logo": organizationLogo,
       };
 }

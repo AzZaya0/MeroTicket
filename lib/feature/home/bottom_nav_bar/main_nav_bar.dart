@@ -9,7 +9,7 @@ import 'package:template/feature/event/presentation/pages/my_events.dart';
 import 'package:template/feature/event/presentation/pages/my_ticket.dart';
 
 import 'package:template/feature/home/bottom_nav_bar/cubit/main_nav_cubit.dart';
-import 'package:template/feature/home/home.dart';
+import 'package:template/feature/home/page/home.dart';
 import 'package:template/feature/settings/presentaion/pages/settings.dart';
 
 import '../../../core/common/controls/custom_text.dart';

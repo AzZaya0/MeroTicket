@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -7,8 +10,11 @@ import 'package:template/core/common/controls/custom_button.dart';
 
 import 'package:template/core/common/controls/custom_text.dart';
 import 'package:template/core/common/controls/custom_textfield.dart';
+import 'package:template/core/common/controls/pick_image/image_picker_cubit.dart';
 import 'package:template/core/utils/extension.dart';
+import 'package:template/feature/event/presentation/state/cubit/event_cubit.dart';
 import 'package:template/feature/event/presentation/widgets/date_range_picker_widget.dart';
+import 'package:template/feature/event/presentation/widgets/search_vendor_widget.dart';
 import 'package:template/feature/event/presentation/widgets/time_picker_widget.dart';
 
 class NewEventPage extends StatefulWidget {
@@ -44,6 +50,7 @@ class _NewEventPageState extends State<NewEventPage> {
     print(args.value);
   }
 
+  File? imageFile;
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -51,7 +58,16 @@ class _NewEventPageState extends State<NewEventPage> {
       bottomNavigationBar: CustomButton(
         radius: 8.h,
         color: appColors(context).primary,
-        onTap: () {},
+        onTap: () {
+          context.read<EventCubit>().createEvent(
+                context: context,
+                eventVenderId: ['1'],
+                title: nameController.text.trim().toString(),
+                eventImage: imageFile,
+                address: addressController.text.trim().toString(),
+                description: descriptionController.text.trim().toString(),
+              );
+        },
         child: CustomText(
           text: 'Create',
           color: appColors(context).bgBackground,
@@ -66,6 +82,45 @@ class _NewEventPageState extends State<NewEventPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Row(
+                  children: [
+                    (imageFile != null)
+                        ? Image.file(
+                            imageFile!,
+                            height: 100.h,
+                            width: 100.h,
+                          )
+                        : Container(),
+                    Gap(16.h),
+                    CustomButton(
+                      height: 40.h,
+                      radius: 8.h,
+                      width: 200.h,
+                      padding: const EdgeInsets.all(0),
+                      color: appColors(context).gray400,
+                      onTap: () async {
+                        var file = await context
+                            .read<ImagePickerCubit>()
+                            .getImage(context: context);
+
+                        if (file != null) {
+                          imageFile = null;
+                          imageFile = await context
+                              .read<ImagePickerCubit>()
+                              .compressImage(file);
+                        }
+                        setState(() {});
+                      },
+                      overlayColor: appColors(context).gray600,
+                      child: CustomText(
+                        text: 'SelectImage',
+                        color: Colors.white,
+                        size: 16.h,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                ),
                 CustomText(
                   text: 'Create Event',
                   color: appColors(context).black,
@@ -174,54 +229,68 @@ class _NewEventPageState extends State<NewEventPage> {
                         controller: addressController,
                         filledColor: appColors(context).bgBackground,
                       ),
+                      SearchWithAttachedSuggestions(),
                       Gap(8.h),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: 5,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Container(
-                            height: 80.h,
-                            width: 150.h,
-                            padding: EdgeInsets.all(8.h),
-                            margin: EdgeInsets.only(bottom: 8.h),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8.h),
-                                color: appColors(context).bgBackground),
-                            child: Row(
-                              children: [
-                                Gap(8.h),
-                                const CircleAvatar(),
-                                Gap(8.h),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                      BlocBuilder<EventCubit, EventState>(
+                        builder: (context, state) {
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: state.selectedVendors?.length ?? 0,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Container(
+                                height: 80.h,
+                                width: 150.h,
+                                padding: EdgeInsets.all(8.h),
+                                margin: EdgeInsets.only(bottom: 8.h),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8.h),
+                                    color: appColors(context).bgBackground),
+                                child: Row(
                                   children: [
-                                    CustomText(
-                                      text: 'Mero Vision inc',
-                                      color: appColors(context).gray800,
-                                      size: 14.h,
-                                      fontWeight: FontWeight.w500,
+                                    Gap(8.h),
+                                    const CircleAvatar(),
+                                    Gap(8.h),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        CustomText(
+                                          text: state.selectedVendors?[index]
+                                                  .name ??
+                                              '',
+                                          color: appColors(context).gray800,
+                                          size: 14.h,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        CustomText(
+                                          text: 'Location',
+                                          color: appColors(context).gray800,
+                                          size: 12.h,
+                                        ),
+                                        CustomText(
+                                          text: 'Category',
+                                          color: appColors(context).gray800,
+                                          size: 12.h,
+                                        ),
+                                      ],
                                     ),
-                                    CustomText(
-                                      text: 'Location',
-                                      color: appColors(context).gray800,
-                                      size: 12.h,
+                                    const Spacer(),
+                                    IconButton(
+                                      icon: Icon(Icons.delete),
+                                      onPressed: () {
+                                        context
+                                            .read<EventCubit>()
+                                            .removeVendorFromList(
+                                                state.selectedVendors?[index]);
+                                      },
+                                      color: appColors(context).orange600,
                                     ),
-                                    CustomText(
-                                      text: 'Category',
-                                      color: appColors(context).gray800,
-                                      size: 12.h,
-                                    ),
+                                    Gap(8.h),
                                   ],
                                 ),
-                                const Spacer(),
-                                IconButton(
-                                  icon: Icon(Icons.delete),
-                                  onPressed: () {},
-                                  color: appColors(context).orange600,
-                                ),
-                                Gap(8.h),
-                              ],
-                            ),
+                              );
+                            },
                           );
                         },
                       ),

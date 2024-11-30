@@ -6,11 +6,12 @@ import 'package:intl/intl.dart';
 
 import 'package:template/config/router/routers.dart';
 import 'package:template/config/themes/themeExtension/theme_extension.dart';
+import 'package:template/core/common/controls/custom_button.dart';
 import 'package:template/core/common/controls/custom_text.dart';
 import 'package:template/core/common/controls/custom_textfield.dart';
 import 'package:template/core/utils/extension.dart';
 import 'package:template/feature/event/data/models/all_events_model.dart';
-import 'package:template/feature/event/presentation/state/cubit/event_cubit.dart';
+import 'package:template/feature/event/presentation/state/event_cubit/event_cubit.dart';
 import 'package:template/feature/home/search_event_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -65,7 +66,26 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                   Gap(20.h),
-                  SearchEventWidget(),
+                  CustomButton(
+                    radius: 16.h,
+                    color: appColors(context).brandSecondary,
+                    onTap: () {
+                      Navigator.pushNamed(context, AppRoutes.searchPageRoute);
+                    },
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.search,
+                        ),
+                        Gap(8.h),
+                        CustomText(
+                          text: 'Search your event',
+                          size: 16.h,
+                          color: appColors(context).gray400,
+                        )
+                      ],
+                    ),
+                  ),
                   Gap(16.h),
                 ],
               ).addMargin(EdgeInsets.symmetric(horizontal: 16.h)),
@@ -149,7 +169,7 @@ class EventHomeCard extends StatelessWidget {
       child: Container(
         // height: 400,
         clipBehavior: Clip.antiAlias,
-        // width: 300.h,
+        width: 250.h,
         decoration: BoxDecoration(
             color: appColors(context).bgBackground,
             borderRadius: BorderRadius.circular(12)),
@@ -167,12 +187,22 @@ class EventHomeCard extends StatelessWidget {
               ),
             ),
             Gap(10.h),
-            Card(
-              color: appColors(context).primary,
-              child: CustomText(
-                text: singleEventData?.eventCategory ?? 'N/A',
-                color: appColors(context).bgBackground,
-              ).addPadding(EdgeInsets.symmetric(horizontal: 15.h)),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.h),
+                color: appColors(context).primary,
+              ),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    CustomText(
+                      text: singleEventData?.eventCategory ?? 'N/A',
+                      color: appColors(context).bgBackground,
+                    ).addPadding(EdgeInsets.symmetric(horizontal: 15.h)),
+                  ],
+                ),
+              ),
             ),
             Gap(4.h),
             CustomText(

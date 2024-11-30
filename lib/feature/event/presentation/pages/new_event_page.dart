@@ -13,7 +13,7 @@ import 'package:template/core/common/controls/custom_textfield.dart';
 import 'package:template/core/common/controls/pick_image/image_picker_cubit.dart';
 import 'package:template/core/utils/extension.dart';
 import 'package:template/feature/auth/presentaion/state/login_cubit.dart';
-import 'package:template/feature/event/presentation/state/cubit/event_cubit.dart';
+import 'package:template/feature/event/presentation/state/event_cubit/event_cubit.dart';
 import 'package:template/feature/event/presentation/widgets/date_range_picker_widget.dart';
 import 'package:template/feature/event/presentation/widgets/search_vendor_widget.dart';
 import 'package:template/feature/event/presentation/widgets/time_picker_widget.dart';

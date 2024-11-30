@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:template/config/themes/themeExtension/theme_extension.dart';
@@ -7,6 +8,8 @@ import 'package:template/core/common/controls/custom_image_network.dart';
 import 'package:template/core/common/controls/custom_text.dart';
 import 'package:template/core/utils/extension.dart';
 import 'package:template/feature/event/data/models/get_event_by_id.dart';
+import 'package:template/feature/event/presentation/state/event_cubit/event_cubit.dart';
+import 'package:template/feature/event/presentation/widgets/search_vendor_widget.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class BottomSheetPages {
@@ -37,13 +40,16 @@ class BottomSheetPages {
                 ListView.builder(
                   shrinkWrap: true,
                   itemCount: eventTickets?.length ?? 0,
-                  itemBuilder: (BuildContext context, int index) {
+                  itemBuilder: (BuildContext ctx, int index) {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         InkWell(
                           onTap: () {
                             nextPage();
+                            context
+                                .read<EventCubit>()
+                                .selectTicket(eventTickets?[index]);
                           },
                           child: Container(
                             color: Colors.transparent,
@@ -80,7 +86,10 @@ class BottomSheetPages {
         forceMaxHeight: false);
   }
 
-  secondPage({required BuildContext context, required Function previous}) {
+  secondPage(
+      {required BuildContext context,
+      required Function previous,
+      required int? eventId}) {
     return SliverWoltModalSheetPage(
         hasTopBarLayer: false,
         surfaceTintColor: appColors(context).brandSecondary,
@@ -96,10 +105,16 @@ class BottomSheetPages {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    tiles(context, 'Cash On Ticket',
-                        'https://www.creativefabrica.com/wp-content/uploads/2020/10/26/paper-money-cash-vector-illustration-Graphics-6296757-1-1-580x386.jpg'),
-                    tiles(context, 'esewa',
-                        'https://republicaimg.nagariknewscdn.com/shared/web/uploads/media/esewa_20200118185351.jpg'),
+                    tiles(
+                        context,
+                        'Cash On Ticket',
+                        'https://www.creativefabrica.com/wp-content/uploads/2020/10/26/paper-money-cash-vector-illustration-Graphics-6296757-1-1-580x386.jpg',
+                        eventId),
+                    tiles(
+                        context,
+                        'esewa',
+                        'https://republicaimg.nagariknewscdn.com/shared/web/uploads/media/esewa_20200118185351.jpg',
+                        eventId),
                   ],
                 ),
                 Gap(20.h)
@@ -125,30 +140,41 @@ class BottomSheetPages {
         forceMaxHeight: false);
   }
 
-  Container tiles(
+  Widget tiles(
     BuildContext context,
     String title,
     String imageUrl,
+    int? eventId,
   ) {
-    return Container(
-      height: 100.h,
-      width: 150.h,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12.h),
-          color: appColors(context).brandSecondary),
-      child: Column(
-        children: [
-          Gap(8.h),
-          CustomImageNetwork(
-              imageUrl: imageUrl, boxFit: BoxFit.cover, height: 50, width: 50),
-          Gap(4.h),
-          CustomText(
-            text: title,
-            size: 12.h,
-            color: appColors(context).gray800,
-          ),
-        ],
+    return InkWell(
+      onTap: () {
+        context
+            .read<EventCubit>()
+            .buyTicket(eventId: eventId, context: context);
+      },
+      child: Container(
+        height: 100.h,
+        width: 150.h,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12.h),
+            color: appColors(context).brandSecondary),
+        child: Column(
+          children: [
+            Gap(8.h),
+            CustomImageNetwork(
+                imageUrl: imageUrl,
+                boxFit: BoxFit.cover,
+                height: 50,
+                width: 50),
+            Gap(4.h),
+            CustomText(
+              text: title,
+              size: 12.h,
+              color: appColors(context).gray800,
+            ),
+          ],
+        ),
       ),
     );
   }

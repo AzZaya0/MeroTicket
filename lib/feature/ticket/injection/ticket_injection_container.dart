@@ -4,7 +4,7 @@ import 'package:template/injection/app_injection_container.dart';
 class TicketInjectionContainer {
   void register() {
     locator.registerLazySingleton(
-      () => TicketCubit(),
+      () => TicketCubit(locator()),
     );
   }
 }

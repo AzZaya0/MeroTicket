@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:template/core/app.dart';
 import 'package:template/core/common/controls/custom_button.dart';
-import 'package:template/feature/event/presentation/state/cubit/event_cubit.dart';
+import 'package:template/feature/event/presentation/state/event_cubit/event_cubit.dart';
 
 import '../../../../config/themes/themeExtension/theme_extension.dart';
 import '../../../../core/common/controls/custom_text.dart';

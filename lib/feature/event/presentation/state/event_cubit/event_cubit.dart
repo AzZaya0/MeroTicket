@@ -222,6 +222,39 @@ class EventCubit extends Cubit<EventState> {
     ticketList = updatedList;
     emit(state.copyWith(ticketType: ticketList));
   }
+
+  EventTicket? chooseTicket;
+  void selectTicket(EventTicket? selectTicket) {
+    chooseTicket = selectTicket;
+  }
+
+  void buyTicket({int? eventId, required BuildContext context}) async {
+    EasyLoading.show(
+      indicator: lottieLoader(
+          ctx: context,
+          lottieAsset: LottieAssets.ticketLoadingLottie,
+          fit: BoxFit.fitHeight,
+          height: 200),
+      maskType: EasyLoadingMaskType.clear,
+    );
+    var response = await eventRepo.buyTicket(
+        eventId: eventId,
+        ticketId: chooseTicket?.id,
+        ticketPrice: chooseTicket?.ticketPrice);
+    response.fold(
+      (l) {
+        EasyLoading.dismiss();
+        EasyLoading.showSuccess('Success !');
+
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+        emit(state.copyWith());
+      },
+      (r) {
+        emit(state.copyWith(eventStatus: EventStatus.error));
+      },
+    );
+  }
 }
 
 //ticket type model

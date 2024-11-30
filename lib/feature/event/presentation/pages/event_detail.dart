@@ -10,7 +10,7 @@ import 'package:template/core/common/controls/custom_button_sheet.dart';
 import 'package:template/core/common/controls/custom_image_network.dart';
 import 'package:template/core/common/controls/custom_text.dart';
 import 'package:template/core/utils/extension.dart';
-import 'package:template/feature/event/presentation/state/cubit/event_cubit.dart';
+import 'package:template/feature/event/presentation/state/event_cubit/event_cubit.dart';
 
 class EventDetail extends StatefulWidget {
   const EventDetail({super.key, this.eventId, this.isTicket});
@@ -63,6 +63,7 @@ class _EventDetailState extends State<EventDetail> {
                           ShowCustomBottomSheet().showBottomSheetsNew(
                               pageIndexNotifier: pageIndexNotifier,
                               eventTickets: eventData?.eventTickets,
+                              eventId: eventData?.id,
                               context: context);
                         },
                         child: CustomText(

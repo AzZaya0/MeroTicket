@@ -9,6 +9,7 @@ class ShowCustomBottomSheet {
   void showBottomSheetsNew(
       {required ValueNotifier<int> pageIndexNotifier,
       required BuildContext context,
+      int? eventId,
       List<EventTicket>? eventTickets}) async {
     // await Future.delayed(Duration(seconds: 1));
 
@@ -30,7 +31,8 @@ class ShowCustomBottomSheet {
         return [
           BottomSheetPages().firstPage(
               context: context, nextPage: nextPage, eventTickets: eventTickets),
-          BottomSheetPages().secondPage(context: context, previous: prevPage),
+          BottomSheetPages().secondPage(
+              context: context, previous: prevPage, eventId: eventId),
         ];
       },
       modalTypeBuilder: (context) {

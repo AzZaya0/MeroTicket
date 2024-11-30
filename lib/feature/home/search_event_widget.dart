@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'dart:async'; // For debouncing
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:template/config/themes/themeExtension/theme_extension.dart';
 import 'package:template/core/common/controls/custom_textfield.dart';
-import 'package:template/feature/event/presentation/state/cubit/event_cubit.dart';
+import 'package:template/core/utils/extension.dart';
+import 'package:template/feature/event/presentation/state/event_cubit/event_cubit.dart';
 import 'package:template/feature/home/page/home.dart'; // For making API calls
 
 class SearchEventWidget extends StatefulWidget {
@@ -54,11 +56,11 @@ class _SearchEventWidgetState extends State<SearchEventWidget> {
                   ? const SizedBox() // Empty space if no suggestions
                   : ListView.builder(
                       shrinkWrap: true,
-                      itemCount: state.vendorData?.length ?? 0,
+                      itemCount: state.searchedModel?.data?.length ?? 0,
                       itemBuilder: (context, index) {
                         return EventHomeCard(
                           singleEventData: state.searchedModel?.data?[index],
-                        );
+                        ).addMargin(EdgeInsets.all(16.h));
                       },
                     ),
             );

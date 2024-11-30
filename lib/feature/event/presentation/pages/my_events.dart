@@ -11,7 +11,7 @@ import 'package:template/core/common/controls/custom_button.dart';
 import 'package:template/core/common/controls/custom_image_network.dart';
 import 'package:template/core/common/controls/custom_text.dart';
 import 'package:template/core/utils/extension.dart';
-import 'package:template/feature/event/presentation/state/cubit/event_cubit.dart';
+import 'package:template/feature/event/presentation/state/event_cubit/event_cubit.dart';
 
 class MyEvents extends StatefulWidget {
   const MyEvents({super.key});

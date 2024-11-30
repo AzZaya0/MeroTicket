@@ -5,7 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:template/config/themes/themeExtension/theme_extension.dart';
 import 'package:template/core/common/controls/custom_button.dart';
-import 'package:template/feature/event/presentation/state/cubit/event_cubit.dart';
+import 'package:template/feature/event/presentation/state/event_cubit/event_cubit.dart';
 
 import '../../../../core/common/controls/custom_text.dart';
 

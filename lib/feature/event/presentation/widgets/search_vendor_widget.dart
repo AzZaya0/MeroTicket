@@ -3,7 +3,7 @@ import 'dart:async'; // For debouncing
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:template/feature/event/data/models/search_vendor_model.dart';
-import 'package:template/feature/event/presentation/state/cubit/event_cubit.dart'; // For making API calls
+import 'package:template/feature/event/presentation/state/event_cubit/event_cubit.dart'; // For making API calls
 
 class SearchWithAttachedSuggestions extends StatefulWidget {
   @override

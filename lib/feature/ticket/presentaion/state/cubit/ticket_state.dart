@@ -1,15 +1,20 @@
 part of 'ticket_cubit.dart';
 
-enum TicketStatus { initial, loading, loaded }
+enum TicketStatus { initial, loading, loaded, error }
 
 class TicketState extends Equatable {
-  const TicketState({this.ticketStatus = TicketStatus.initial});
+  const TicketState(
+      {this.ticketStatus = TicketStatus.initial, this.myTicketsModel});
 
   final TicketStatus ticketStatus;
-  TicketState copyWith({TicketStatus? ticketStatus}) {
-    return TicketState(ticketStatus: ticketStatus ?? this.ticketStatus);
+  final MyTicketsModel? myTicketsModel;
+  TicketState copyWith(
+      {TicketStatus? ticketStatus, MyTicketsModel? myTicketsModel}) {
+    return TicketState(
+        ticketStatus: ticketStatus ?? this.ticketStatus,
+        myTicketsModel: myTicketsModel ?? this.myTicketsModel);
   }
 
   @override
-  List<Object?> get props => [ticketStatus];
+  List<Object?> get props => [ticketStatus, myTicketsModel];
 }

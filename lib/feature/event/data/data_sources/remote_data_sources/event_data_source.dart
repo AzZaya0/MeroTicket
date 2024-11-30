@@ -15,6 +15,7 @@ import 'package:template/feature/event/data/models/my_events_model.dart';
 import 'package:template/feature/event/data/models/search_vendor_model.dart';
 import 'package:template/feature/event/data/repository/event_repo.dart';
 import 'package:template/feature/event/presentation/pages/my_events.dart';
+import 'package:template/feature/event/presentation/state/cubit/event_cubit.dart';
 
 class EventDataSource extends EventRepo {
   final Api api;
@@ -25,24 +26,32 @@ class EventDataSource extends EventRepo {
   });
 
   @override
-  Future<Either<CreateEventModel?, AppErrorHandler>> createEvent(
-      {required File imageFile,
-      required String title,
-      required String description,
-      required String category,
-      required String address,
-      required String startTime,
-      required String endTime,
-      required String startDate,
-      required String endDate,
-      required List<int?> eventVenderId}) async {
+  Future<Either<CreateEventModel?, AppErrorHandler>> createEvent({
+    required File imageFile,
+    required String title,
+    required String description,
+    required String category,
+    required String address,
+    required String startTime,
+    required String endTime,
+    required String startDate,
+    required String endDate,
+    required List<int?> eventVenderId,
+    required List<TicketType?> eventTickets,
+  }) async {
     try {
       var token = await preferences.getString(PrefKey.token);
+
       var headers = {
         'Accept': 'application/json',
         'Authorization': "Bearer ${token ?? ''}"
       };
-
+      var newTicketLists = eventTickets
+          .where(
+            (ticket) => ticket != null,
+          )
+          .map((ticket) => ticket!.toJson())
+          .toList();
       var data = await createFormData('event_image', imageFile, {
         'title': title,
         'description': description,
@@ -53,6 +62,7 @@ class EventDataSource extends EventRepo {
         'address': address,
         'event_category': category,
         'event_vender_id[]': eventVenderId,
+        'event_tickets': newTicketLists,
       });
 
       final response = await api.sendRequest.post(
@@ -140,6 +150,84 @@ class EventDataSource extends EventRepo {
       );
       if (response.statusCode == 200) {
         var model = SearchVendorModel.fromJson(response.data);
+
+        return left(model);
+      } else {
+        return right(
+          AppErrorHandler(
+            message: response.data['message'] as String,
+            status: false,
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 401) {
+        return right(
+          AppErrorHandler(
+            message: e.response?.data['message'],
+            status: false,
+          ),
+        );
+      }
+      if (e.response?.statusCode == 403) {
+        return right(
+          AppErrorHandler(
+            message: e.response?.data['message'],
+            status: false,
+          ),
+        );
+      }
+      if (e.response?.statusCode == 422) {
+        return right(
+          AppErrorHandler(
+            message: (e.response?.data['errors']['email']).toString(),
+            status: false,
+          ),
+        );
+      }
+
+      if (e.response?.statusCode == 500) {
+        return right(
+          AppErrorHandler(
+            message: (e.response?.data["message"]).toString(),
+            status: false,
+          ),
+        );
+      } else {
+        return right(
+          AppErrorHandler(
+            message: e.message.toString(),
+            status: false,
+          ),
+        );
+      }
+    } catch (e) {
+      return right(
+        AppErrorHandler(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<AllEventsModel?, AppErrorHandler>> searchEvent(
+      {required String query}) async {
+    try {
+      var token = await preferences.getString(PrefKey.token);
+      var headers = {
+        'Accept': 'application/json',
+        'Authorization': "Bearer ${token ?? ''}"
+      };
+
+      final response = await api.sendRequest.get(
+        options: Options(headers: headers),
+        GetApiEndPoints.searchVendor,
+        queryParameters: {"search_keyword": query},
+      );
+      if (response.statusCode == 200) {
+        var model = AllEventsModel.fromJson(response.data);
 
         return left(model);
       } else {

@@ -6,10 +6,14 @@ import 'package:template/core/common/controls/custom_button.dart';
 import 'package:template/core/common/controls/custom_image_network.dart';
 import 'package:template/core/common/controls/custom_text.dart';
 import 'package:template/core/utils/extension.dart';
+import 'package:template/feature/event/data/models/get_event_by_id.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class BottomSheetPages {
-  firstPage({required BuildContext context, required Function nextPage}) {
+  firstPage(
+      {required BuildContext context,
+      required Function nextPage,
+      List<EventTicket>? eventTickets}) {
     return SliverWoltModalSheetPage(
         hasTopBarLayer: false,
         surfaceTintColor: appColors(context).brandSecondary,
@@ -20,42 +24,57 @@ class BottomSheetPages {
             color: appColors(context).gray100,
             padding: EdgeInsets.all(16.h),
             // height: 300,
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: 3,
-              itemBuilder: (BuildContext context, int index) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        nextPage();
-                      },
-                      child: Container(
-                        color: Colors.transparent,
-                        height: 50,
-                        width: double.infinity,
-                        child: Row(
-                          children: [
-                            CustomText(
-                              text: 'Basic',
-                              color: appColors(context).gray800,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Gap(16.h),
+                CustomText(
+                  text: 'Select Ticket ',
+                  color: appColors(context).gray800,
+                  fontWeight: FontWeight.w500,
+                ),
+                Gap(16.h),
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: eventTickets?.length ?? 0,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            nextPage();
+                          },
+                          child: Container(
+                            color: Colors.transparent,
+                            height: 50,
+                            width: double.infinity,
+                            child: Row(
+                              children: [
+                                CustomText(
+                                  text:
+                                      eventTickets?[index].ticketType ?? 'N/A',
+                                  color: appColors(context).gray800,
+                                ),
+                                const Spacer(),
+                                CustomText(
+                                    text: eventTickets?[index].ticketPrice ??
+                                        'N/A',
+                                    color: appColors(context).gray400)
+                              ],
                             ),
-                            Spacer(),
-                            CustomText(
-                                text: '150', color: appColors(context).gray400)
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                    Divider(
-                      height: 0.h,
-                      thickness: 0.5,
-                    )
-                  ],
-                );
-              },
-            ).addMargin(EdgeInsets.only(top: 30)),
+                        Divider(
+                          height: 0.h,
+                          thickness: 0.5,
+                        )
+                      ],
+                    );
+                  },
+                ),
+              ],
+            ),
           ))
         ],
         forceMaxHeight: false);
@@ -88,17 +107,21 @@ class BottomSheetPages {
             ),
           )),
         ],
-        stickyActionBar: CustomButton(
-          onTap: () {
-            previous();
-          },
-          height: 50,
-          radius: 8.h,
-          color: appColors(context).primary!,
-          width: double.infinity,
-          text: 'Buy Now',
-          textColor: appColors(context).brandSecondary,
-        ).addMargin(EdgeInsets.all(8.h)),
+        stickyActionBar: Row(
+          children: [
+            CustomButton(
+              onTap: () {
+                previous();
+              },
+              height: 50,
+              radius: 8.h,
+              color: appColors(context).primary!,
+              width: 150.h,
+              text: 'Previous',
+              textColor: appColors(context).brandSecondary,
+            ).addMargin(EdgeInsets.all(8.h)),
+          ],
+        ),
         forceMaxHeight: false);
   }
 

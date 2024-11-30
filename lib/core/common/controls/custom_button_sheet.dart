@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:template/feature/event/data/models/get_event_by_id.dart';
 import 'package:template/feature/event/presentation/widgets/payment_bottom_sheet.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
@@ -7,7 +8,8 @@ class ShowCustomBottomSheet {
   final double _pageBreakpoint = 768.0;
   void showBottomSheetsNew(
       {required ValueNotifier<int> pageIndexNotifier,
-      required BuildContext context}) async {
+      required BuildContext context,
+      List<EventTicket>? eventTickets}) async {
     // await Future.delayed(Duration(seconds: 1));
 
     WoltModalSheet.show<void>(
@@ -26,7 +28,8 @@ class ShowCustomBottomSheet {
         }
 
         return [
-          BottomSheetPages().firstPage(context: context, nextPage: nextPage),
+          BottomSheetPages().firstPage(
+              context: context, nextPage: nextPage, eventTickets: eventTickets),
           BottomSheetPages().secondPage(context: context, previous: prevPage),
         ];
       },

@@ -38,6 +38,7 @@ class Data {
   String? eventCategory;
   String? eventImage;
   List<Vendor>? vendors;
+  List<EventTicket>? eventTickets;
 
   Data({
     this.id,
@@ -52,6 +53,7 @@ class Data {
     this.eventCategory,
     this.eventImage,
     this.vendors,
+    this.eventTickets,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
@@ -73,6 +75,10 @@ class Data {
             ? []
             : List<Vendor>.from(
                 json["vendors"]!.map((x) => Vendor.fromJson(x))),
+        eventTickets: json["event_tickets"] == null
+            ? []
+            : List<EventTicket>.from(
+                json["event_tickets"]!.map((x) => EventTicket.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -92,6 +98,53 @@ class Data {
         "vendors": vendors == null
             ? []
             : List<dynamic>.from(vendors!.map((x) => x.toJson())),
+        "event_tickets": eventTickets == null
+            ? []
+            : List<dynamic>.from(eventTickets!.map((x) => x.toJson())),
+      };
+}
+
+class EventTicket {
+  int? id;
+  int? eventId;
+  String? ticketType;
+  String? ticketPrice;
+  dynamic qrCode;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  EventTicket({
+    this.id,
+    this.eventId,
+    this.ticketType,
+    this.ticketPrice,
+    this.qrCode,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  factory EventTicket.fromJson(Map<String, dynamic> json) => EventTicket(
+        id: json["id"],
+        eventId: json["event_id"],
+        ticketType: json["ticket_type"],
+        ticketPrice: json["ticket_price"],
+        qrCode: json["qr_code"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "event_id": eventId,
+        "ticket_type": ticketType,
+        "ticket_price": ticketPrice,
+        "qr_code": qrCode,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
       };
 }
 
@@ -121,14 +174,14 @@ class Venders {
   String? name;
   String? email;
   String? phone;
-  dynamic location;
+  String? location;
   String? address;
-  dynamic organizationName;
-  dynamic organizationCategory;
+  String? organizationName;
+  String? organizationCategory;
   DateTime? createdAt;
   DateTime? updatedAt;
   List<String>? role;
-  dynamic profileImage;
+  String? profileImage;
   String? organizationLogo;
 
   Venders({

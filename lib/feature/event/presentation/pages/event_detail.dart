@@ -62,6 +62,7 @@ class _EventDetailState extends State<EventDetail> {
                         onTap: () {
                           ShowCustomBottomSheet().showBottomSheetsNew(
                               pageIndexNotifier: pageIndexNotifier,
+                              eventTickets: eventData?.eventTickets,
                               context: context);
                         },
                         child: CustomText(

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
@@ -68,6 +69,7 @@ class EventCubit extends Cubit<EventState> {
           startTime: formatTimeOfDay(
             startTime ?? TimeOfDay(hour: 0, minute: 00),
           ),
+          eventTickets: ticketList,
           title: title);
       EasyLoading.dismiss();
       Navigator.of(context).pop();
@@ -85,6 +87,20 @@ class EventCubit extends Cubit<EventState> {
   TimeOfDay? endTime;
   setTime(bool isStart, TimeOfDay? time) {
     isStart ? startTime = time : endTime = time;
+  }
+
+  searchEvent(String query) async {
+    var response = await eventRepo.searchEvent(query: query);
+
+    return response.fold(
+      (l) {
+        emit(state.copyWith(searchedModel: l));
+        return l;
+      },
+      (error) {
+        return null;
+      },
+    );
   }
 
 //
@@ -188,4 +204,60 @@ class EventCubit extends Cubit<EventState> {
       },
     );
   }
+
+  List<TicketType?> ticketList = [];
+
+  void addTicket(TicketType ticketType) {
+    // Create a new list to trigger Equatable's detection
+    final updatedList = List<TicketType?>.from(ticketList);
+    updatedList.add(ticketType);
+    ticketList = updatedList;
+    emit(state.copyWith(ticketType: ticketList));
+  }
+
+  void deleteTicket(TicketType? ticketType) {
+    // Create a new list to trigger Equatable's detection
+    final updatedList = List<TicketType?>.from(ticketList);
+    updatedList.remove(ticketType);
+    ticketList = updatedList;
+    emit(state.copyWith(ticketType: ticketList));
+  }
+}
+
+//ticket type model
+
+TicketType ticketTypeFromJson(String str) =>
+    TicketType.fromJson(json.decode(str));
+
+String ticketTypeToJson(TicketType data) => json.encode(data.toJson());
+
+class TicketType {
+  String? ticketType;
+  String? ticketPrice;
+
+  TicketType({
+    this.ticketType,
+    this.ticketPrice,
+  });
+
+  factory TicketType.fromJson(Map<String, dynamic> json) => TicketType(
+        ticketType: json["ticket_type"],
+        ticketPrice: json["ticket_price"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "ticket_type": ticketType,
+        "ticket_price": ticketPrice,
+      };
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is TicketType &&
+        other.ticketType == ticketType &&
+        other.ticketPrice == ticketPrice;
+  }
+
+  @override
+  int get hashCode => Object.hash(ticketType, ticketPrice);
 }

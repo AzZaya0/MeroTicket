@@ -298,6 +298,228 @@ class _NewEventPageState extends State<NewEventPage> {
                 ),
                 Gap(16.h),
                 Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      color: appColors(context).gray100,
+                      borderRadius: BorderRadius.circular(8.h)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomText(
+                        text: 'Ticket prices & types',
+                        color: appColors(context).gray800,
+                        size: 16.h,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      Gap(16.h),
+                      BlocBuilder<EventCubit, EventState>(
+                        builder: (context, state) {
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: state.ticketType?.length ?? 0,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Container(
+                                margin: EdgeInsets.only(bottom: 16.h),
+                                decoration: BoxDecoration(
+                                    color: appColors(context).brandSecondary,
+                                    borderRadius: BorderRadius.circular(8.h)),
+                                child: Row(
+                                  children: [
+                                    Gap(10.h),
+                                    CustomText(
+                                      text: state
+                                              .ticketType?[index]?.ticketType ??
+                                          '',
+                                      color: appColors(context).gray600,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    const Spacer(),
+                                    CustomText(
+                                      text:
+                                          "RS ${state.ticketType?[index]?.ticketPrice ?? ''}",
+                                      color: appColors(context).gray600,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    IconButton(
+                                        onPressed: () {
+                                          context
+                                              .read<EventCubit>()
+                                              .deleteTicket(
+                                                  state.ticketType?[index]);
+                                        },
+                                        icon: Icon(Icons.delete))
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                      //
+                      CustomButton(
+                        elevation: 0,
+                        onTap: () {
+////
+
+                          void showModernTicketInputDialog(
+                              BuildContext context) {
+                            final TextEditingController ticketTypeController =
+                                TextEditingController();
+                            final TextEditingController ticketPriceController =
+                                TextEditingController();
+
+                            showDialog(
+                              context: context,
+                              barrierDismissible:
+                                  false, // Prevent dismissing on background tap
+                              builder: (BuildContext context) {
+                                return Dialog(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                        20), // Rounded corners
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(20),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        CustomText(
+                                          text: 'Enter Ticket Details',
+                                          size: 20.h,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        SizedBox(height: 20.h),
+                                        TextField(
+                                          controller: ticketTypeController,
+                                          decoration: InputDecoration(
+                                            labelText: 'Ticket Type',
+                                            hintText: 'Eg.. Basic',
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                              horizontal: 16.h,
+                                              vertical: 12.h,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 15.h),
+                                        TextField(
+                                          controller: ticketPriceController,
+                                          keyboardType: TextInputType.number,
+                                          decoration: InputDecoration(
+                                            labelText: 'Ticket Price',
+                                            hintText: 'Enter ticket price',
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                              horizontal: 16.h,
+                                              vertical: 12.h,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 20.h),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              style: TextButton.styleFrom(
+                                                foregroundColor:
+                                                    Colors.redAccent,
+                                              ),
+                                              child: CustomText(
+                                                text: 'Cancel',
+                                                size: 16.h,
+                                                color:
+                                                    appColors(context).gray600,
+                                              ),
+                                            ),
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                String ticketType =
+                                                    ticketTypeController.text;
+                                                String ticketPrice =
+                                                    ticketPriceController.text;
+
+                                                if (ticketType.isEmpty ||
+                                                    ticketPrice.isEmpty) {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    const SnackBar(
+                                                      content: Text(
+                                                          'Please fill in all fields'),
+                                                      backgroundColor:
+                                                          Colors.redAccent,
+                                                    ),
+                                                  );
+                                                  return;
+                                                }
+
+                                                // Use the input values here
+                                                print(
+                                                    'Ticket Type: $ticketType');
+                                                print(
+                                                    'Ticket Price: $ticketPrice');
+                                                context
+                                                    .read<EventCubit>()
+                                                    .addTicket(TicketType(
+                                                        ticketType: ticketType,
+                                                        ticketPrice:
+                                                            ticketPrice));
+                                                // Close the dialog
+                                                Navigator.of(context).pop();
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                    appColors(context).primary,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                              ),
+                                              child: CustomText(
+                                                text: 'Submit',
+                                                size: 16.h,
+                                                color: appColors(context)
+                                                    .brandSecondary,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          }
+
+                          showModernTicketInputDialog(context);
+//////
+                        },
+                        height: 40.h,
+                        color: appColors(context).brandSecondary,
+                        radius: 8.h,
+                        width: double.infinity,
+                        child: CustomText(
+                          text: '+TicketType',
+                          color: appColors(context).gray400,
+                        ),
+                      )
+                    ],
+                  ).addMargin(EdgeInsets.all(8.h)),
+                ),
+                Gap(16.h),
+                Container(
                   decoration: BoxDecoration(
                       color: appColors(context).gray100,
                       borderRadius: BorderRadius.circular(8.h)),

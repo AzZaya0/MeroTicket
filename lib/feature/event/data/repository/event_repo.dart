@@ -6,6 +6,7 @@ import 'package:template/feature/event/data/models/create_event_model.dart';
 import 'package:template/feature/event/data/models/get_event_by_id.dart';
 import 'package:template/feature/event/data/models/my_events_model.dart';
 import 'package:template/feature/event/data/models/search_vendor_model.dart';
+import 'package:template/feature/event/presentation/state/cubit/event_cubit.dart';
 
 import '../models/all_events_model.dart';
 
@@ -21,9 +22,12 @@ abstract class EventRepo {
     required String startDate,
     required String endDate,
     required List<int?> eventVenderId,
+    required List<TicketType?> eventTickets,
   });
 
   Future<Either<SearchVendorModel?, AppErrorHandler>> searchVendor(
+      {required String query});
+  Future<Either<AllEventsModel?, AppErrorHandler>> searchEvent(
       {required String query});
   Future<Either<MyEventsModel?, AppErrorHandler>> getMyEvents();
   Future<Either<AllEventsModel?, AppErrorHandler>> getAllEvents();

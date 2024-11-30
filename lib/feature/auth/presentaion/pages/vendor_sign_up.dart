@@ -179,7 +179,13 @@ class _VendorSignUpState extends State<VendorSignUp> {
                                           '',
                                       size: 14.h,
                                       fontWeight: FontWeight.w500,
-                                      color: appColors(context).gray800,
+                                      color: (state.categoryNameList ?? [''])
+                                              .contains(state
+                                                      .organizationCategoryModel
+                                                      ?.data?[index] ??
+                                                  '')
+                                          ? appColors(context).brandSecondary
+                                          : appColors(context).gray800,
                                     ),
                                   ),
                                 );

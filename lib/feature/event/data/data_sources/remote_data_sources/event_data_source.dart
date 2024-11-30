@@ -27,6 +27,7 @@ class EventDataSource extends EventRepo {
       {required File imageFile,
       required String title,
       required String description,
+      required String category,
       required String address,
       required String startTime,
       required String endTime,
@@ -48,6 +49,7 @@ class EventDataSource extends EventRepo {
         'start_time': startTime,
         'end_time': endTime,
         'address': address,
+        'event_category': category,
         'event_vender_id[]': eventVenderId,
       });
 

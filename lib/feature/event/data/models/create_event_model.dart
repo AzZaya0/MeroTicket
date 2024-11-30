@@ -42,6 +42,8 @@ class Data {
   String? address;
   DateTime? updatedAt;
   DateTime? createdAt;
+
+  String? eventCategory;
   int? id;
 
   Data({
@@ -53,6 +55,7 @@ class Data {
     this.startTime,
     this.endTime,
     this.address,
+    this.eventCategory,
     this.updatedAt,
     this.createdAt,
     this.id,
@@ -67,6 +70,7 @@ class Data {
         startTime: json["start_time"],
         endTime: json["end_time"],
         address: json["address"],
+        eventCategory: json["event_category"],
         updatedAt: json["updated_at"] == null
             ? null
             : DateTime.parse(json["updated_at"]),
@@ -84,7 +88,8 @@ class Data {
         "end_date": endDate,
         "start_time": startTime,
         "end_time": endTime,
-        "address": address,
+        "address": eventCategory,
+        "event_category": address,
         "updated_at": updatedAt?.toIso8601String(),
         "created_at": createdAt?.toIso8601String(),
         "id": id,

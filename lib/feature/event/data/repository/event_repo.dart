@@ -13,7 +13,7 @@ abstract class EventRepo {
     required String description,
     required String address,
     required String startTime,
-    required String endTime,
+    required String endTime,required String category,
     required String startDate,
     required String endDate,
     required List<int?> eventVenderId,

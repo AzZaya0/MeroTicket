@@ -27,14 +27,13 @@ class EventCubit extends Cubit<EventState> {
     return DateFormat('hh:mm a').format(dt);
   }
 
-  createEvent({
-    required BuildContext context,
-    required File? eventImage,
-    required String title,
-    required String description,
-    required String address,
-    required List<String> eventVenderId,
-  }) async {
+  createEvent(
+      {required BuildContext context,
+      required File? eventImage,
+      required String title,
+      required String description,
+      required String address,
+      required String category}) async {
     //
     if (eventImage != null) {
       EasyLoading.show(
@@ -55,6 +54,7 @@ class EventCubit extends Cubit<EventState> {
       var response = await eventRepo.createEvent(
           imageFile: eventImage,
           address: address,
+          category: category,
           description: description,
           endDate: formattedEndDate,
           endTime: formatTimeOfDay(

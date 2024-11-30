@@ -5,7 +5,7 @@ import 'package:template/feature/auth/presentaion/pages/vendor_sign_up.dart';
 import 'package:template/feature/event/presentation/pages/event_detail.dart';
 import 'package:template/feature/event/presentation/pages/new_event_page.dart';
 import 'package:template/feature/home/bottom_nav_bar/main_nav_bar.dart';
-
+import '../../feature/event/data/models/my_events_model.dart';
 import '../../feature/splash/presentaion/pages/splash_screen.dart';
 
 class AppRoutes {
@@ -13,15 +13,10 @@ class AppRoutes {
   static const String loginRoute = '/login';
   static const String mainNavRoute = '/navRoute';
   static const String signUpRoute = '/signUpRoute';
-  static const String vendorSignUpRoute = '/vendorSignUpRoute ';
+  static const String vendorSignUpRoute = '/vendorSignUpRoute';
   static const String newEventRoute = '/newEventRoute';
   static const String eventDetailRoute = '/eventDetail';
 
-  static const String homeRoute = '/home';
-
-  /// The `static final Map<String, Widget Function(BuildContext)> routes` is a map that associates
-  /// route names with corresponding widget builders. In this case, the `initialRoute` is associated
-  /// with a `SplashScreen` widget builder function.
   static final Map<String, Widget Function(BuildContext)> routes = {
     initialRoute: (context) => const SplashScreen(),
     loginRoute: (context) => const LoginPage(),
@@ -29,6 +24,38 @@ class AppRoutes {
     vendorSignUpRoute: (context) => const VendorSignUp(),
     mainNavRoute: (context) => const MainNavBar(),
     newEventRoute: (context) => const NewEventPage(),
-    // eventDetailRoute: (context) => const EventDetail(eventImage: ,),
   };
+
+  static Route<dynamic> generateRoute(RouteSettings settings) {
+    switch (settings.name) {
+      case initialRoute:
+        return MaterialPageRoute(builder: (_) => const SplashScreen());
+
+      case newEventRoute:
+        return MaterialPageRoute(builder: (_) => const NewEventPage());
+
+      case eventDetailRoute:
+        final args = settings.arguments as Map<String, dynamic>?;
+
+        // Ensure arguments are passed
+        if (args != null) {
+          final Datum? eventData = args['eventData'] ?? '';
+
+          return MaterialPageRoute(
+            builder: (_) => EventDetail(
+              eventData: eventData,
+            ),
+          );
+        }
+        // Fallback if no arguments are provided
+        return MaterialPageRoute(
+          builder: (_) => const EventDetail(
+            eventData: null,
+          ),
+        );
+
+      default:
+        return MaterialPageRoute(builder: (_) => const SplashScreen());
+    }
+  }
 }

@@ -40,6 +40,7 @@ class Datum {
   String? endTime;
   String? address;
   String? eventImage;
+  String? eventCategory;
   List<Vendor>? vendors;
 
   Datum({
@@ -52,6 +53,7 @@ class Datum {
     this.startTime,
     this.endTime,
     this.address,
+    this.eventCategory,
     this.eventImage,
     this.vendors,
   });
@@ -70,6 +72,7 @@ class Datum {
         endTime: json["end_time"],
         address: json["address"],
         eventImage: json["event_image"],
+        eventCategory: json["event_category"],
         vendors: json["vendors"] == null
             ? []
             : List<Vendor>.from(
@@ -81,6 +84,7 @@ class Datum {
         "user_id": userId,
         "title": title,
         "description": description,
+        "event_category": eventCategory,
         "start_date":
             "${startDate!.year.toString().padLeft(4, '0')}-${startDate!.month.toString().padLeft(2, '0')}-${startDate!.day.toString().padLeft(2, '0')}",
         "end_date":

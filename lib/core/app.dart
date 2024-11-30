@@ -38,7 +38,9 @@ class _AppState extends State<App> {
               debugShowCheckedModeBanner: false,
               theme: theme,
               builder: EasyLoading.init(),
-              routes: AppRoutes.routes),
+              routes: AppRoutes.routes,
+              onGenerateRoute: AppRoutes.generateRoute,
+              ),
         );
       }),
     );

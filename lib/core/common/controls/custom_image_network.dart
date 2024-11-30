@@ -1,4 +1,3 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -16,7 +15,7 @@ class CustomImageNetwork extends StatelessWidget {
     this.blendMode,
     this.errorWidget,
   }) : super(key: key);
-  final String imageUrl;
+  final String? imageUrl;
   final BoxFit boxFit;
   final double height;
   final double width;
@@ -26,14 +25,20 @@ class CustomImageNetwork extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
-        imageUrl: imageUrl,
+        imageUrl: imageUrl ??
+            "https://archive.org/download/placeholder-image/placeholder-image.jpg",
         fit: boxFit,
         height: height,
         width: width,
         color: color, // Adjust the last value (opacity) as needed
         colorBlendMode: blendMode,
-        placeholder: (context, url) =>
-            const SizedBox(), // Placeholder widget while the image is loading
+        placeholder: (context, url) => SvgPicture.asset(
+              SvgAssets.profilePlaceholder,
+              color: Colors.black,
+              fit: boxFit,
+              height: height,
+              width: width,
+            ), // Placeholder widget while the image is loading
         errorWidget: (context, url, error) =>
             errorWidget ??
             SvgPicture.asset(

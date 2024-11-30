@@ -12,6 +12,7 @@ import 'package:template/core/common/controls/custom_text.dart';
 import 'package:template/core/common/controls/custom_textfield.dart';
 import 'package:template/core/common/controls/pick_image/image_picker_cubit.dart';
 import 'package:template/core/utils/extension.dart';
+import 'package:template/feature/auth/presentaion/state/login_cubit.dart';
 import 'package:template/feature/event/presentation/state/cubit/event_cubit.dart';
 import 'package:template/feature/event/presentation/widgets/date_range_picker_widget.dart';
 import 'package:template/feature/event/presentation/widgets/search_vendor_widget.dart';
@@ -55,23 +56,27 @@ class _NewEventPageState extends State<NewEventPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: CustomButton(
-        radius: 8.h,
-        color: appColors(context).primary,
-        onTap: () {
-          context.read<EventCubit>().createEvent(
-                context: context,
-                eventVenderId: ['1'],
-                title: nameController.text.trim().toString(),
-                eventImage: imageFile,
-                address: addressController.text.trim().toString(),
-                description: descriptionController.text.trim().toString(),
-              );
+      bottomNavigationBar: BlocBuilder<LoginCubit, LoginState>(
+        builder: (context, state) {
+          return CustomButton(
+            radius: 8.h,
+            color: appColors(context).primary,
+            onTap: () {
+              context.read<EventCubit>().createEvent(
+                    category: state.categoryNameList?.first ?? '',
+                    context: context,
+                    title: nameController.text.trim().toString(),
+                    eventImage: imageFile,
+                    address: addressController.text.trim().toString(),
+                    description: descriptionController.text.trim().toString(),
+                  );
+            },
+            child: CustomText(
+              text: 'Create',
+              color: appColors(context).bgBackground,
+            ),
+          );
         },
-        child: CustomText(
-          text: 'Create',
-          color: appColors(context).bgBackground,
-        ),
       ).addMargin(EdgeInsets.all(8.h)),
       appBar: AppBar(),
       body: SizedBox(
@@ -82,50 +87,62 @@ class _NewEventPageState extends State<NewEventPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    (imageFile != null)
-                        ? Image.file(
-                            imageFile!,
-                            height: 100.h,
-                            width: 100.h,
-                          )
-                        : Container(),
-                    Gap(16.h),
-                    CustomButton(
-                      height: 40.h,
-                      radius: 8.h,
-                      width: 200.h,
-                      padding: const EdgeInsets.all(0),
-                      color: appColors(context).gray400,
-                      onTap: () async {
-                        var file = await context
-                            .read<ImagePickerCubit>()
-                            .getImage(context: context);
-
-                        if (file != null) {
-                          imageFile = null;
-                          imageFile = await context
-                              .read<ImagePickerCubit>()
-                              .compressImage(file);
-                        }
-                        setState(() {});
-                      },
-                      overlayColor: appColors(context).gray600,
-                      child: CustomText(
-                        text: 'SelectImage',
-                        color: Colors.white,
-                        size: 16.h,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ],
-                ),
                 CustomText(
                   text: 'Create Event',
                   color: appColors(context).black,
                   size: 18.h,
                   fontWeight: FontWeight.w600,
+                ),
+                Gap(8.h),
+                Container(
+                  padding: EdgeInsets.all(8.h),
+                  decoration: BoxDecoration(
+                      color: appColors(context).gray100,
+                      borderRadius: BorderRadius.circular(8.h)),
+                  child: Row(
+                    children: [
+                      CustomButton(
+                        height: 40.h,
+                        radius: 8.h,
+                        width: 200.h,
+                        padding: const EdgeInsets.all(0),
+                        color: appColors(context).gray400,
+                        onTap: () async {
+                          var file = await context
+                              .read<ImagePickerCubit>()
+                              .getImage(context: context);
+
+                          if (file != null) {
+                            imageFile = null;
+                            imageFile = await context
+                                .read<ImagePickerCubit>()
+                                .compressImage(file);
+                          }
+                          setState(() {});
+                        },
+                        overlayColor: appColors(context).gray600,
+                        child: CustomText(
+                          text: 'Choose Event Image',
+                          color: Colors.white,
+                          size: 16.h,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      Spacer(),
+                      (imageFile != null)
+                          ? Container(
+                              clipBehavior: Clip.antiAlias,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12.h)),
+                              child: Image.file(
+                                imageFile!,
+                                height: 100.h,
+                                width: 100.h,
+                              ),
+                            )
+                          : Container(),
+                    ],
+                  ),
                 ),
                 Gap(16.h),
                 Container(
@@ -188,6 +205,79 @@ class _NewEventPageState extends State<NewEventPage> {
                 ),
                 Gap(16.h),
                 Container(
+                  padding: EdgeInsets.all(8.h),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      color: appColors(context).gray100,
+                      borderRadius: BorderRadius.circular(8.h)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomText(
+                        text: 'Organization Category',
+                        size: 14.h,
+                        fontWeight: FontWeight.w500,
+                        color: appColors(context).gray800,
+                      ),
+                      BlocBuilder<LoginCubit, LoginState>(
+                        builder: (context, state) {
+                          return Wrap(
+                            children: [
+                              ...List.generate(
+                                state.organizationCategoryModel?.data?.length ??
+                                    0,
+                                (index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      context
+                                          .read<LoginCubit>()
+                                          .addNameToCategory(state
+                                                  .organizationCategoryModel
+                                                  ?.data?[index] ??
+                                              '');
+                                      // setState(() {});
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.all(4.h),
+                                      padding: EdgeInsets.all(4.h),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(10.h),
+                                        color: (state.categoryNameList ?? [''])
+                                                .contains(state
+                                                        .organizationCategoryModel
+                                                        ?.data?[index] ??
+                                                    '')
+                                            ? appColors(context).primary
+                                            : appColors(context).bgBackground,
+                                      ),
+                                      child: CustomText(
+                                        text: state.organizationCategoryModel
+                                                ?.data?[index] ??
+                                            '',
+                                        size: 14.h,
+                                        fontWeight: FontWeight.w500,
+                                        color: (state.categoryNameList ?? [''])
+                                                .contains(state
+                                                        .organizationCategoryModel
+                                                        ?.data?[index] ??
+                                                    '')
+                                            ? appColors(context).brandSecondary
+                                            : appColors(context).gray800,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              )
+                            ],
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                Gap(16.h),
+                Container(
                   decoration: BoxDecoration(
                       color: appColors(context).gray100,
                       borderRadius: BorderRadius.circular(8.h)),
@@ -221,14 +311,6 @@ class _NewEventPageState extends State<NewEventPage> {
                         fontWeight: FontWeight.w500,
                       ),
                       Gap(4.h),
-                      CustomTextField(
-                        hintText: 'search',
-                        hintColor: appColors(context).gray400,
-                        maxLines: 1,
-                        expands: false,
-                        controller: addressController,
-                        filledColor: appColors(context).bgBackground,
-                      ),
                       SearchWithAttachedSuggestions(),
                       Gap(8.h),
                       BlocBuilder<EventCubit, EventState>(

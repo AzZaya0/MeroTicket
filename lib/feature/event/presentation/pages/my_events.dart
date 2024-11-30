@@ -36,7 +36,28 @@ class _MyEventsState extends State<MyEvents> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: CustomText(
+          text: 'My Events',
+          color: appColors(context).black,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      floatingActionButton: CustomButton(
+        height: 0,
+        width: 0,
+        dynamicSize: true,
+        padding: EdgeInsets.all(8.h),
+        onTap: () {
+          Navigator.pushNamed(context, AppRoutes.newEventRoute);
+        },
+        color: appColors(context).primary,
+        radius: 8.h,
+        child: CustomText(
+          text: 'Create More',
+          color: appColors(context).brandSecondary,
+        ),
+      ),
       backgroundColor: appColors(context).bgBackground,
       body: BlocBuilder<EventCubit, EventState>(
         builder: (context, state) {
@@ -63,7 +84,7 @@ class _MyEventsState extends State<MyEvents> {
                     );
                   },
                   elevation: 0.5,
-                  color: appColors(context).brandSecondary,
+                  color: appColors(context).gray100,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -121,24 +142,31 @@ class _MyEventsState extends State<MyEvents> {
                                         return Positioned(
                                           right: vendorIndex * (20.h / 1.5),
                                           child: Container(
-                                            margin: EdgeInsets.all(2),
+                                            margin: EdgeInsets.all(2.h),
+                                            clipBehavior: Clip.antiAlias,
                                             decoration: BoxDecoration(
                                                 border: Border.all(
+                                                    width: 3,
                                                     color: appColors(context)
                                                         .brandSecondary!),
                                                 borderRadius:
-                                                    BorderRadius.circular(300)),
-                                            child: CustomImageNetwork(
-                                                imageUrl: state
-                                                        .myEventsModel
-                                                        ?.data?[index]
-                                                        .vendors?[vendorIndex]
-                                                        .venders
-                                                        ?.profileImage ??
-                                                    '',
-                                                boxFit: BoxFit.cover,
-                                                height: 20.h,
-                                                width: 20.h),
+                                                    BorderRadius.circular(
+                                                        9000)),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(999),
+                                              child: CustomImageNetwork(
+                                                  imageUrl: state
+                                                          .myEventsModel
+                                                          ?.data?[index]
+                                                          .vendors?[vendorIndex]
+                                                          .venders
+                                                          ?.organizationLogo ??
+                                                      '',
+                                                  boxFit: BoxFit.cover,
+                                                  height: 20.h,
+                                                  width: 20.h),
+                                            ),
                                           ),
                                         );
                                       },

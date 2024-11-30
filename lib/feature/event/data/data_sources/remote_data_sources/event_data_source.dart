@@ -8,6 +8,7 @@ import 'package:template/core/failure/error_handler.dart';
 import 'package:template/core/network/api/api.dart';
 import 'package:template/core/preferences/preferences.dart';
 import 'package:template/core/utils/create_form_data.dart';
+import 'package:template/feature/event/data/models/all_events_model.dart';
 import 'package:template/feature/event/data/models/create_event_model.dart';
 import 'package:template/feature/event/data/models/my_events_model.dart';
 import 'package:template/feature/event/data/models/search_vendor_model.dart';
@@ -214,6 +215,82 @@ class EventDataSource extends EventRepo {
       );
       if (response.statusCode == 200) {
         var model = MyEventsModel.fromJson(response.data);
+
+        return left(model);
+      } else {
+        return right(
+          AppErrorHandler(
+            message: response.data['message'] as String,
+            status: false,
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 401) {
+        return right(
+          AppErrorHandler(
+            message: e.response?.data['message'],
+            status: false,
+          ),
+        );
+      }
+      if (e.response?.statusCode == 403) {
+        return right(
+          AppErrorHandler(
+            message: e.response?.data['message'],
+            status: false,
+          ),
+        );
+      }
+      if (e.response?.statusCode == 422) {
+        return right(
+          AppErrorHandler(
+            message: (e.response?.data['errors']['email']).toString(),
+            status: false,
+          ),
+        );
+      }
+
+      if (e.response?.statusCode == 500) {
+        return right(
+          AppErrorHandler(
+            message: (e.response?.data["message"]).toString(),
+            status: false,
+          ),
+        );
+      } else {
+        return right(
+          AppErrorHandler(
+            message: e.message.toString(),
+            status: false,
+          ),
+        );
+      }
+    } catch (e) {
+      return right(
+        AppErrorHandler(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<AllEventsModel?, AppErrorHandler>> getAllEvents() async {
+    try {
+      var token = await preferences.getString(PrefKey.token);
+      var headers = {
+        'Accept': 'application/json',
+        'Authorization': "Bearer ${token ?? ''}"
+      };
+
+      final response = await api.sendRequest.get(
+        options: Options(headers: headers),
+        GetApiEndPoints.allEvents,
+      );
+      if (response.statusCode == 200) {
+        var model = AllEventsModel.fromJson(response.data);
 
         return left(model);
       } else {

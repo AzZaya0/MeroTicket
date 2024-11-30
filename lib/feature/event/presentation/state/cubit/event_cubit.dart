@@ -5,6 +5,8 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
+import 'package:template/feature/event/data/models/all_events_model.dart '
+    as AllEvents;
 import 'package:template/feature/event/data/models/my_events_model.dart'
     as M_Events;
 import 'package:template/feature/event/data/repository/event_repo.dart';
@@ -153,6 +155,20 @@ class EventCubit extends Cubit<EventState> {
     response.fold(
       (l) {
         emit(state.copyWith(eventStatus: EventStatus.loaded, myEventsModel: l));
+      },
+      (r) {
+        emit(state.copyWith(eventStatus: EventStatus.error));
+      },
+    );
+  }
+
+  getAllEvents() async {
+    // emit(state.copyWith(eventStatus: EventStatus.loading));
+    var response = await eventRepo.getAllEvents();
+    response.fold(
+      (l) {
+        emit(
+            state.copyWith(eventStatus: EventStatus.loaded, allEventsModel: l));
       },
       (r) {
         emit(state.copyWith(eventStatus: EventStatus.error));

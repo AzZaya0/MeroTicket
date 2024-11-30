@@ -112,7 +112,7 @@ class _VendorSignUpState extends State<VendorSignUp> {
                     Gap(16.h),
                     SignUpTextfieldSection(
                         title: 'Institution Name',
-                        textInputType: TextInputType.phone,
+                        textInputType: TextInputType.emailAddress,
                         hintText: "Enter your Institution Name",
                         validator: (value) {
                           if (value?.trim().isEmpty ?? false) {
@@ -125,7 +125,7 @@ class _VendorSignUpState extends State<VendorSignUp> {
                     Gap(16.h),
                     SignUpTextfieldSection(
                         title: 'Owner Name',
-                        textInputType: TextInputType.phone,
+                        textInputType: TextInputType.emailAddress,
                         hintText: "Enter your Owner Name",
                         validator: (value) {
                           if (value?.trim().isEmpty ?? false) {

@@ -24,4 +24,5 @@ class GetApiEndPoints {
   static const String organizationCategory = "${ApiEndpoints.baseURL}/category";
   static const String searchVendor = "${ApiEndpoints.baseURL}/vendors";
   static const String myEvents = "${ApiEndpoints.baseURL}/my-events";
+  static const String allEvents = "${ApiEndpoints.baseURL}/event";
 }

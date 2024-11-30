@@ -6,6 +6,7 @@ import 'package:template/core/network/api/api.dart';
 import 'package:template/feature/auth/injection/default_injection_container.dart';
 import 'package:template/feature/event/injection/event_injection_container.dart';
 import 'package:template/feature/home/injection_container.dart';
+import 'package:template/feature/ticket/injection/ticket_injection_container.dart';
 
 import '../core/preferences/preferences.dart';
 
@@ -17,4 +18,5 @@ void setupDependencyInjection() {
   LoginInjectionContainer().register();
   HomeInjectionContainer().register();
   EventInjectionContainer().register();
+  TicketInjectionContainer().register();
 }

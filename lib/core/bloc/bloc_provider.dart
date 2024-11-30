@@ -4,6 +4,7 @@ import 'package:template/core/common/controls/pick_image/image_picker_cubit.dart
 import 'package:template/feature/auth/presentaion/state/login_cubit.dart';
 import 'package:template/feature/event/presentation/state/cubit/event_cubit.dart';
 import 'package:template/feature/home/bottom_nav_bar/cubit/main_nav_cubit.dart';
+import 'package:template/feature/ticket/presentaion/state/cubit/ticket_cubit.dart';
 import 'package:template/injection/app_injection_container.dart';
 
 class BlocProvidersList {
@@ -24,6 +25,9 @@ class BlocProvidersList {
     ),
     BlocProvider<EventCubit>(
       create: (_) => locator<EventCubit>(),
+    ),
+    BlocProvider<TicketCubit>(
+      create: (_) => locator<TicketCubit>(),
     )
   ];
 }

@@ -3,30 +3,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
-import 'package:template/config/constants/asset_manager.dart';
 import 'package:template/config/router/routers.dart';
-import 'package:template/config/themes/themeExtension/theme_extension.dart';
-import 'package:template/core/app.dart';
-import 'package:template/core/common/controls/custom_button.dart';
 import 'package:template/core/common/controls/custom_image_network.dart';
 import 'package:template/core/common/controls/custom_text.dart';
 import 'package:template/core/utils/extension.dart';
-import 'package:template/feature/event/presentation/state/cubit/event_cubit.dart';
+import 'package:template/feature/ticket/presentaion/state/cubit/ticket_cubit.dart';
 
-class MyEvents extends StatefulWidget {
-  const MyEvents({super.key});
+import '../../../../config/constants/asset_manager.dart';
+import '../../../../config/themes/themeExtension/theme_extension.dart';
+import '../../../../core/common/controls/custom_button.dart';
 
-  @override
-  State<MyEvents> createState() => _MyEventsState();
-}
-
-class _MyEventsState extends State<MyEvents> {
-  @override
-  void initState() {
-    context.read<EventCubit>().getMyEvents();
-    super.initState();
-  }
-
+class MyTicket extends StatelessWidget {
+  const MyTicket({super.key});
   String formatDate(DateTime date) {
     // Define the desired format
     final DateFormat formatter = DateFormat('ddMMM');
@@ -38,36 +26,31 @@ class _MyEventsState extends State<MyEvents> {
     return Scaffold(
       appBar: AppBar(
         title: CustomText(
-          text: 'My Events',
+          text: 'My Tickets',
           color: appColors(context).black,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w500,
         ),
       ),
-      floatingActionButton: CustomButton(
-        height: 0,
-        width: 0,
-        dynamicSize: true,
-        padding: EdgeInsets.all(8.h),
-        onTap: () {
-          Navigator.pushNamed(context, AppRoutes.newEventRoute);
-        },
-        color: appColors(context).primary,
-        radius: 8.h,
-        child: CustomText(
-          text: 'Create More',
-          color: appColors(context).brandSecondary,
-        ),
-      ),
-      backgroundColor: appColors(context).bgBackground,
-      body: BlocBuilder<EventCubit, EventState>(
-        builder: (context, state) {
-          // if (false) {
-          if (state.myEventsModel != null &&
-              ((state.myEventsModel?.data?.isNotEmpty) ?? false)) {
+      body: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: BlocBuilder<TicketCubit, TicketState>(
+          builder: (context, state) {
+            // return Column(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   crossAxisAlignment: CrossAxisAlignment.center,
+            //   children: [
+            //     lottieLoader(
+            //         ctx: context, lottieAsset: LottieAssets.myTicketLottie),
+            //     CustomText(
+            //       text: 'No Tickets',
+            //       color: appColors(context).primary,
+            //     ),
+            //   ],
+            // );
+
             return ListView.builder(
-              itemCount: state.myEventsModel?.data?.length ?? 0,
+              itemCount: 5,
               itemBuilder: (BuildContext context, int index) {
-                var eventData = state.myEventsModel?.data?[index];
                 return CustomButton(
                   height: null,
                   width: null,
@@ -78,18 +61,19 @@ class _MyEventsState extends State<MyEvents> {
                     Navigator.pushNamed(
                       context,
                       AppRoutes.eventDetailRoute,
-                      arguments: {'eventId': eventData?.id, 'isTicket': false},
+                      arguments: {'eventId': 1, 'isTicket': true},
                     );
                   },
                   elevation: 0.5,
-                  color: appColors(context).gray100,
+                  color: appColors(context).brandSecondary,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(18.h),
                         child: CustomImageNetwork(
-                            imageUrl: eventData?.eventImage ?? '',
+                            imageUrl:
+                                'https://offloadmedia.feverup.com/parissecret.com/wp-content/uploads/2023/09/06110716/Montage-photos-articles-PS-2023-12-06T110657.772-1024x683.jpg',
                             boxFit: BoxFit.cover,
                             height: 100.h,
                             width: 90.h),
@@ -99,13 +83,13 @@ class _MyEventsState extends State<MyEvents> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CustomText(
-                            text: eventData?.title ?? '',
+                            text: 'Concert',
                             color: appColors(context).black,
                             fontWeight: FontWeight.w500,
                             size: 16.h,
                           ),
                           CustomText(
-                            text: eventData?.address ?? '',
+                            text: 'Kathmandu',
                             color: appColors(context).gray600,
                             size: 14.h,
                             fontWeight: FontWeight.w400,
@@ -113,8 +97,7 @@ class _MyEventsState extends State<MyEvents> {
                           Row(
                             children: [
                               CustomText(
-                                text: formatDate(
-                                    eventData?.startDate ?? DateTime.now()),
+                                text: formatDate(DateTime.now()),
                                 size: 14.h,
                                 color: appColors(context).gray400,
                               ),
@@ -124,8 +107,7 @@ class _MyEventsState extends State<MyEvents> {
                                 color: appColors(context).gray400,
                               ),
                               CustomText(
-                                text: formatDate(
-                                    eventData?.endDate ?? DateTime.now()),
+                                text: formatDate(DateTime.now()),
                                 size: 14.h,
                                 color: appColors(context).gray400,
                               ),
@@ -135,7 +117,7 @@ class _MyEventsState extends State<MyEvents> {
                                 child: Stack(
                                   children: [
                                     ...List.generate(
-                                      eventData?.vendors?.length ?? 0,
+                                      2,
                                       (vendorIndex) {
                                         return Positioned(
                                           right: vendorIndex * (20.h / 1.5),
@@ -154,13 +136,7 @@ class _MyEventsState extends State<MyEvents> {
                                               borderRadius:
                                                   BorderRadius.circular(999),
                                               child: CustomImageNetwork(
-                                                  imageUrl: state
-                                                          .myEventsModel
-                                                          ?.data?[index]
-                                                          .vendors?[vendorIndex]
-                                                          .venders
-                                                          ?.organizationLogo ??
-                                                      '',
+                                                  imageUrl: '',
                                                   boxFit: BoxFit.cover,
                                                   height: 20.h,
                                                   width: 20.h),
@@ -175,7 +151,7 @@ class _MyEventsState extends State<MyEvents> {
                             ],
                           ),
                           CustomText(
-                            text: eventData?.eventCategory ?? '',
+                            text: 'Music',
                             size: 12.h,
                             color: appColors(context).orange600,
                           )
@@ -186,30 +162,8 @@ class _MyEventsState extends State<MyEvents> {
                 ).addMargin(EdgeInsets.all(8.h));
               },
             );
-          } else {
-            return SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, AppRoutes.newEventRoute);
-                },
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    lottieLoader(
-                        ctx: context,
-                        lottieAsset: LottieAssets.createEventLottie),
-                    CustomText(
-                      text: 'Tap to Create One',
-                      color: appColors(context).primary,
-                    ),
-                  ],
-                ),
-              ),
-            );
-          }
-        },
+          },
+        ),
       ),
     );
   }

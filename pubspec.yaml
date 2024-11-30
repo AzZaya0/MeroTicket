@@ -60,6 +60,7 @@ dependencies:
   flutter_image_compress: ^2.3.0
   shared_preferences: ^2.3.3
   flutter_easyloading: ^3.0.5
+  wolt_modal_sheet: ^0.6.1
 
 dev_dependencies:
   flutter_test:

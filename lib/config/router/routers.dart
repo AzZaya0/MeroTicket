@@ -39,18 +39,20 @@ class AppRoutes {
 
         // Ensure arguments are passed
         if (args != null) {
-          final Datum? eventData = args['eventData'] ?? '';
+          final int? eventId = args['eventId'] ?? '';
+          final bool? isTicket = args['isTicket'] ?? '';
 
           return MaterialPageRoute(
             builder: (_) => EventDetail(
-              eventData: eventData,
+              eventId: eventId,
+              isTicket: isTicket,
             ),
           );
         }
         // Fallback if no arguments are provided
         return MaterialPageRoute(
           builder: (_) => const EventDetail(
-            eventData: null,
+            eventId: null,
           ),
         );
 

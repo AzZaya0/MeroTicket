@@ -5,13 +5,14 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
-import 'package:template/feature/event/data/models/all_events_model.dart '
-    as AllEvents;
+import 'package:template/feature/event/data/models/get_event_by_id.dart';
+
 import 'package:template/feature/event/data/models/my_events_model.dart'
     as M_Events;
 import 'package:template/feature/event/data/repository/event_repo.dart';
 
 import '../../../../../config/constants/asset_manager.dart';
+import '../../../data/models/all_events_model.dart' as all_events;
 import '../../../data/models/search_vendor_model.dart';
 
 part 'event_state.dart';
@@ -167,8 +168,20 @@ class EventCubit extends Cubit<EventState> {
     var response = await eventRepo.getAllEvents();
     response.fold(
       (l) {
-        emit(
-            state.copyWith(eventStatus: EventStatus.loaded, allEventsModel: l));
+        emit(state.copyWith(allEventsModel: l));
+      },
+      (r) {
+        emit(state.copyWith(eventStatus: EventStatus.error));
+      },
+    );
+  }
+
+  getEventById({int? eventId}) async {
+    // emit(state.copyWith(eventStatus: EventStatus.loading));
+    var response = await eventRepo.getEventById(eventId: eventId);
+    response.fold(
+      (l) {
+        emit(state.copyWith(getEventById: l));
       },
       (r) {
         emit(state.copyWith(eventStatus: EventStatus.error));

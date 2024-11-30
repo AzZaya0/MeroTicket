@@ -1,35 +1,31 @@
 // To parse this JSON data, do
 //
-//     final allEventsModel = allEventsModelFromJson(jsonString);
+//     final getEventById = getEventByIdFromJson(jsonString);
 
 import 'dart:convert';
 
-AllEventsModel allEventsModelFromJson(String str) =>
-    AllEventsModel.fromJson(json.decode(str));
+GetEventById getEventByIdFromJson(String str) =>
+    GetEventById.fromJson(json.decode(str));
 
-String allEventsModelToJson(AllEventsModel data) => json.encode(data.toJson());
+String getEventByIdToJson(GetEventById data) => json.encode(data.toJson());
 
-class AllEventsModel {
-  List<Datum>? data;
+class GetEventById {
+  Data? data;
 
-  AllEventsModel({
+  GetEventById({
     this.data,
   });
 
-  factory AllEventsModel.fromJson(Map<String, dynamic> json) => AllEventsModel(
-        data: json["data"] == null
-            ? []
-            : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+  factory GetEventById.fromJson(Map<String, dynamic> json) => GetEventById(
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "data": data == null
-            ? []
-            : List<dynamic>.from(data!.map((x) => x.toJson())),
+        "data": data?.toJson(),
       };
 }
 
-class Datum {
+class Data {
   int? id;
   int? userId;
   String? title;
@@ -43,7 +39,7 @@ class Datum {
   String? eventImage;
   List<Vendor>? vendors;
 
-  Datum({
+  Data({
     this.id,
     this.userId,
     this.title,
@@ -58,7 +54,7 @@ class Datum {
     this.vendors,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
         id: json["id"],
         userId: json["user_id"],
         title: json["title"],
@@ -188,13 +184,4 @@ class Venders {
         "profile_image": profileImage,
         "organization_logo": organizationLogo,
       };
-  // Override == operator and hashCode for comparison
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    return other is Datum && other.id == id;
-  }
-
-  @override
-  int get hashCode => id.hashCode;
 }

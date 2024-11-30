@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:template/core/failure/error_handler.dart';
 import 'package:template/feature/event/data/models/create_event_model.dart';
+import 'package:template/feature/event/data/models/get_event_by_id.dart';
 import 'package:template/feature/event/data/models/my_events_model.dart';
 import 'package:template/feature/event/data/models/search_vendor_model.dart';
 
@@ -26,4 +27,5 @@ abstract class EventRepo {
       {required String query});
   Future<Either<MyEventsModel?, AppErrorHandler>> getMyEvents();
   Future<Either<AllEventsModel?, AppErrorHandler>> getAllEvents();
+  Future<Either<GetEventById?, AppErrorHandler>> getEventById({int? eventId});
 }

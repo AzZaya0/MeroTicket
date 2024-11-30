@@ -1,14 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:intl/intl.dart';
+import 'package:template/config/router/routers.dart';
 import 'package:template/config/themes/themeExtension/theme_extension.dart';
 
 import 'package:template/core/common/controls/custom_text.dart';
 import 'package:template/core/common/controls/custom_textfield.dart';
 import 'package:template/core/utils/extension.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:template/feature/event/data/models/my_events_model.dart';
+import 'package:template/feature/event/presentation/state/cubit/event_cubit.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<EventCubit>().getAllEvents();
+  }
+
+  //
+  String formatDate(DateTime date) {
+    // Define the desired format
+    final DateFormat formatter = DateFormat('MMM dd');
+    return formatter.format(date);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,85 +104,108 @@ class HomePage extends StatelessWidget {
   }
 
   Widget events(BuildContext context, String title) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Gap(24.h),
-        CustomText(
-          text: title,
-          color: appColors(context).gray800,
-        ),
-        Row(
+    return BlocBuilder<EventCubit, EventState>(
+      builder: (context, state) {
+        var eventData = state.allEventsModel?.data;
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Icon(Icons.circle),
-            Gap(6.h),
-            const CustomText(
-              text: 'Top Pick\'s',
-              size: 24,
-              fontWeight: FontWeight.w600,
-            )
-          ],
-        ),
-        Gap(14.h),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: List.generate(
-              4,
-              (index) {
-                return Container(
-                  // height: 400,
-                  clipBehavior: Clip.antiAlias,
-                  // width: 300.h,
-                  decoration: BoxDecoration(
-                      color: appColors(context).bgBackground,
-                      borderRadius: BorderRadius.circular(12)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Image.network(
-                          'https://vancouver.ca/images/cov/feature/crowd-hands-clapping.jpg',
-                          height: 150.h,
-                          width: 250.h,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      Gap(10.h),
-                      Card(
-                        color: appColors(context).primary,
-                        child: CustomText(
-                          text: 'Art',
-                          color: appColors(context).bgBackground,
-                        ).addPadding(EdgeInsets.symmetric(horizontal: 15.h)),
-                      ),
-                      Gap(4.h),
-                      CustomText(
-                        text: 'The Planter Show',
-                        size: 20.h,
-                        color: appColors(context).gray800,
-                      ),
-                      CustomText(
-                        text: 'September 24',
-                        color: appColors(context).gray800,
-                        size: 12.h,
-                      ),
-                      CustomText(
-                        text: 'by meroVision.inc',
-                        color: appColors(context).gray800,
-                        size: 14.h,
-                      ),
-                    ],
-                  ).addPadding(const EdgeInsets.all(10)),
-                ).addMargin(const EdgeInsets.only(
-                  right: 10,
-                ));
-              },
+            Gap(24.h),
+            CustomText(
+              text: title,
+              color: appColors(context).gray800,
             ),
-          ),
-        ),
-      ],
+            Row(
+              children: [
+                const Icon(Icons.circle),
+                Gap(6.h),
+                const CustomText(
+                  text: 'Top Pick\'s',
+                  size: 24,
+                  fontWeight: FontWeight.w600,
+                )
+              ],
+            ),
+            Gap(14.h),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: List.generate(
+                  state.allEventsModel?.data?.length ?? 0,
+                  (index) {
+                    return InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          AppRoutes.eventDetailRoute,
+                          arguments: {
+                            'eventId':
+                                state.allEventsModel?.data?[index].id ?? 0,
+                            'isTicket': false
+                          },
+                        );
+                      },
+                      child: Container(
+                        // height: 400,
+                        clipBehavior: Clip.antiAlias,
+                        // width: 300.h,
+                        decoration: BoxDecoration(
+                            color: appColors(context).bgBackground,
+                            borderRadius: BorderRadius.circular(12)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.network(
+                                eventData?[index].eventImage ??
+                                    'https://vancouver.ca/images/cov/feature/crowd-hands-clapping.jpg',
+                                height: 150.h,
+                                width: 250.h,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            Gap(10.h),
+                            Card(
+                              color: appColors(context).primary,
+                              child: CustomText(
+                                text: eventData?[index].eventCategory ?? 'N/A',
+                                color: appColors(context).bgBackground,
+                              ).addPadding(
+                                  EdgeInsets.symmetric(horizontal: 15.h)),
+                            ),
+                            Gap(4.h),
+                            CustomText(
+                              text: eventData?[index].title ?? 'N/A',
+                              size: 20.h,
+                              fontWeight: FontWeight.w500,
+                              color: appColors(context).gray800,
+                            ),
+                            CustomText(
+                              text: formatDate(eventData?[index].startDate ??
+                                  DateTime.now()),
+                              color: appColors(context).gray800,
+                              size: 12.h,
+                            ),
+                            CustomText(
+                              text: "At ${eventData?[index].address ?? 'N/A'}",
+                              color: appColors(context).gray800,
+                              size: 14.h,
+                            ),
+                          ],
+                        ).addPadding(const EdgeInsets.all(10)),
+                      ).addMargin(const EdgeInsets.only(
+                        right: 10,
+                      )),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

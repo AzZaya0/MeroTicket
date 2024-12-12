@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:template/config/themes/themeExtension/theme_extension.dart';
-import 'package:template/feature/event/presentation/pages/events_page.dart';
 import 'package:template/feature/event/presentation/pages/my_events.dart';
 import 'package:template/feature/ticket/presentaion/pages/my_ticket.dart';
 
@@ -13,9 +12,12 @@ import 'package:template/feature/home/page/home.dart';
 import 'package:template/feature/settings/presentaion/pages/settings.dart';
 
 import '../../../core/common/controls/custom_text.dart';
+import '../../auth/data/models/login_model.dart';
 
 class MainNavBar extends StatefulWidget {
-  const MainNavBar({super.key});
+  const MainNavBar({
+    super.key,
+  });
 
   @override
   State<MainNavBar> createState() => _MainNavBarState();
@@ -27,7 +29,7 @@ class _MainNavBarState extends State<MainNavBar> {
     MyTicket(),
     const MyEvents(),
     // const EventsPage(),
-    const SettingsPage(),
+    SettingsPage(),
   ];
 
   @override

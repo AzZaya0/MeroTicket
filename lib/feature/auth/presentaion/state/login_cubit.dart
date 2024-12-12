@@ -9,6 +9,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:template/config/constants/asset_manager.dart';
 import 'package:template/config/router/routers.dart';
 import 'package:template/core/common/custom_snackbar.dart';
+import 'package:template/feature/auth/data/models/login_model.dart';
 import 'package:template/feature/auth/data/models/organization_category_model.dart';
 import 'package:template/feature/auth/domain/repository/login_repo.dart';
 
@@ -37,7 +38,7 @@ class LoginCubit extends Cubit<LoginState> {
         EasyLoading.dismiss();
         EasyLoading.showSuccess('Welcome ${l?.data?.user?.name}',
             dismissOnTap: true);
-        emit(state.copyWith(loginStatus: LoginStatus.loaded));
+        emit(state.copyWith(loginStatus: LoginStatus.loaded, loginData: l));
         final nav = Navigator.of(context);
         nav.pushNamedAndRemoveUntil(AppRoutes.mainNavRoute, (route) => false);
         print(l?.data);

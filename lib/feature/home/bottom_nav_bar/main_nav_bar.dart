@@ -24,7 +24,7 @@ class MainNavBar extends StatefulWidget {
 class _MainNavBarState extends State<MainNavBar> {
   var screens = [
     const HomePage(),
-    const MyTicket(),
+    MyTicket(),
     const MyEvents(),
     // const EventsPage(),
     const SettingsPage(),

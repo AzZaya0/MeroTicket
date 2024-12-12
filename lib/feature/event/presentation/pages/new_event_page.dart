@@ -7,6 +7,7 @@ import 'package:gap/gap.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:template/config/themes/themeExtension/theme_extension.dart';
 import 'package:template/core/common/controls/custom_button.dart';
+import 'package:template/core/common/controls/custom_image_network.dart';
 
 import 'package:template/core/common/controls/custom_text.dart';
 import 'package:template/core/common/controls/custom_textfield.dart';
@@ -553,7 +554,13 @@ class _NewEventPageState extends State<NewEventPage> {
                                 child: Row(
                                   children: [
                                     Gap(8.h),
-                                    const CircleAvatar(),
+                                    CustomImageNetwork(
+                                        imageUrl: state.selectedVendors?[index]
+                                                .organizationLogo ??
+                                            '',
+                                        boxFit: BoxFit.cover,
+                                        height: 50,
+                                        width: 50),
                                     Gap(8.h),
                                     Column(
                                       crossAxisAlignment:
@@ -568,12 +575,16 @@ class _NewEventPageState extends State<NewEventPage> {
                                           fontWeight: FontWeight.w500,
                                         ),
                                         CustomText(
-                                          text: 'Location',
+                                          text: state.selectedVendors?[index]
+                                                  .address ??
+                                              '',
                                           color: appColors(context).gray800,
                                           size: 12.h,
                                         ),
                                         CustomText(
-                                          text: 'Category',
+                                          text: state.selectedVendors?[index]
+                                                  .organizationName ??
+                                              '',
                                           color: appColors(context).gray800,
                                           size: 12.h,
                                         ),

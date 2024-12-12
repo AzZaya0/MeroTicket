@@ -9,6 +9,7 @@ class EventState extends Equatable {
       this.selectedVendors,
       this.selectedVendorsIds,
       this.allEventsModel,
+      this.scannedTicket,
       this.getEventById,
       this.ticketType,
       this.searchedModel,
@@ -20,6 +21,7 @@ class EventState extends Equatable {
   final all_events.AllEventsModel? allEventsModel;
   final M_Events.MyEventsModel? myEventsModel;
   final GetEventById? getEventById;
+  final ScannedTicketModel? scannedTicket;
   final all_events.AllEventsModel? searchedModel;
   final List<TicketType?>? ticketType;
   EventState copyWith(
@@ -30,6 +32,7 @@ class EventState extends Equatable {
       all_events.AllEventsModel? allEventsModel,
       all_events.AllEventsModel? searchedModel,
       GetEventById? getEventById,
+      ScannedTicketModel? scannedTicket,
       List<TicketType?>? ticketType,
       List<int?>? selectedVendorsIds}) {
     return EventState(
@@ -40,6 +43,7 @@ class EventState extends Equatable {
         allEventsModel: allEventsModel ?? this.allEventsModel,
         selectedVendorsIds: selectedVendorsIds ?? this.selectedVendorsIds,
         selectedVendors: selectedVendors ?? this.selectedVendors,
+        scannedTicket: scannedTicket ?? this.scannedTicket,
         ticketType: ticketType ?? this.ticketType,
         myEventsModel: myEventsModel ?? this.myEventsModel);
   }
@@ -51,6 +55,7 @@ class EventState extends Equatable {
         selectedVendors,
         selectedVendorsIds,
         allEventsModel,
+        scannedTicket,
         searchedModel,
         getEventById,
         ticketType,

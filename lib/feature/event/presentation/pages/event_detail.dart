@@ -3,7 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:haptic_feedback/haptic_feedback.dart';
 import 'package:intl/intl.dart';
+import 'package:qr_code_dart_scan/qr_code_dart_scan.dart';
+// import 'package:flutter_haptic/flutter_haptic.dart';
 import 'package:template/config/themes/themeExtension/theme_extension.dart';
 import 'package:template/core/common/controls/custom_button.dart';
 import 'package:template/core/common/controls/custom_button_sheet.dart';
@@ -225,7 +228,49 @@ class _EventDetailState extends State<EventDetail> {
                     height: 0,
                   ),
                 ],
-              ).addMargin(EdgeInsets.all(16.h))
+              ).addMargin(EdgeInsets.all(16.h)),
+              (widget.isTicket ?? false)
+                  ? SizedBox(
+                      height: 200,
+                      child: QRCodeDartScanView(
+                        scanInvertedQRCode:
+                            true, // enable scan invert qr code ( default = false)
+
+                        typeScan: TypeScan
+                            .live, // if TypeScan.takePicture will try decode when click to take a picture(default TypeScan.live)
+                        intervalScan: const Duration(seconds: 2)
+                        // onResultInterceptor: (old,new){
+                        //  do any rule to controll onCapture.
+                        // }
+                        // takePictureButtonBuilder: (context,controller,isLoading){ // if typeScan == TypeScan.takePicture you can customize the button.
+                        //    if(loading) return CircularProgressIndicator();
+                        //    return ElevatedButton(
+                        //       onPressed:controller.takePictureAndDecode,
+                        //       child:Text('Take a picture'),
+                        //    );
+                        // }
+                        // resolutionPreset: = QrCodeDartScanResolutionPreset.high,
+                        // formats: [ // You can restrict specific formats.
+                        //  BarcodeFormat.qrCode,
+                        //  BarcodeFormat.aztec,
+                        //  BarcodeFormat.dataMatrix,
+                        //  BarcodeFormat.pdf417,
+                        //  BarcodeFormat.code39,
+                        //  BarcodeFormat.code93,
+                        //  BarcodeFormat.code128,
+                        //  BarcodeFormat.ean8,
+                        //  BarcodeFormat.ean13,
+                        // ],,
+                        ,
+                        onCapture: (Result result) async {
+                          await Haptics.vibrate(HapticsType.success);
+                          print(result.text);
+                          context.read<EventCubit>().scanTicket(
+                              ticketId: result.text, context: context);
+                        },
+                      ),
+                    )
+                  : SizedBox()
             ],
           ).addMargin(EdgeInsets.all(16.h)));
     });

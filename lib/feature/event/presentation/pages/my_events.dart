@@ -78,7 +78,7 @@ class _MyEventsState extends State<MyEvents> {
                     Navigator.pushNamed(
                       context,
                       AppRoutes.eventDetailRoute,
-                      arguments: {'eventId': eventData?.id, 'isTicket': false},
+                      arguments: {'eventId': eventData?.id, 'isTicket': true},
                     );
                   },
                   elevation: 0.5,

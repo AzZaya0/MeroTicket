@@ -61,6 +61,10 @@ dependencies:
   shared_preferences: ^2.3.3
   flutter_easyloading: ^3.0.5
   wolt_modal_sheet: ^0.6.1
+  pretty_qr_code: ^3.3.0
+  qr_code_dart_scan: ^0.9.3
+  haptic_feedback: ^0.5.1+1
+
 
 dev_dependencies:
   flutter_test:

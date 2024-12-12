@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:template/feature/auth/presentaion/pages/login_page.dart';
 import 'package:template/feature/auth/presentaion/pages/sign_up_page.dart';
 import 'package:template/feature/auth/presentaion/pages/vendor_sign_up.dart';
+import 'package:template/feature/event/data/models/my_tickets_model.dart';
 import 'package:template/feature/event/presentation/pages/event_detail.dart';
 import 'package:template/feature/event/presentation/pages/new_event_page.dart';
 import 'package:template/feature/home/bottom_nav_bar/main_nav_bar.dart';
 import 'package:template/feature/home/page/search_page.dart';
-import '../../feature/event/data/models/my_events_model.dart';
+import 'package:template/feature/ticket/presentaion/pages/ticket_detail_page.dart';
 import '../../feature/splash/presentaion/pages/splash_screen.dart';
 
 class AppRoutes {
@@ -18,6 +19,7 @@ class AppRoutes {
   static const String newEventRoute = '/newEventRoute';
   static const String eventDetailRoute = '/eventDetail';
   static const String searchPageRoute = '/searchPageRoute';
+  static const String ticketDetailPage = '/ticketDetailPage';
 
   static final Map<String, Widget Function(BuildContext)> routes = {
     initialRoute: (context) => const SplashScreen(),
@@ -52,13 +54,33 @@ class AppRoutes {
             ),
           );
         }
+
         // Fallback if no arguments are provided
         return MaterialPageRoute(
           builder: (_) => const EventDetail(
             eventId: null,
           ),
         );
+      case ticketDetailPage:
+        final args = settings.arguments as Map<String, dynamic>?;
 
+        // Ensure arguments are passed
+        if (args != null) {
+          final Event? eventData = args['eventData'] ?? '';
+          final EventTicket? ticketDetail = args['ticketData'] ?? '';
+          final String? userTicketId = args['user_ticket_id'] ?? '';
+
+          return MaterialPageRoute(
+            builder: (_) => TicketDetailPage(
+              ticketDetail: ticketDetail,
+              eventData: eventData,
+              userTicketId: userTicketId,
+            ),
+          );
+        }
+        return MaterialPageRoute(
+          builder: (_) => const TicketDetailPage(),
+        );
       default:
         return MaterialPageRoute(builder: (_) => const SplashScreen());
     }

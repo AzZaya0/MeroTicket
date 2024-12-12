@@ -6,6 +6,7 @@ import 'package:template/feature/event/data/models/create_event_model.dart';
 import 'package:template/feature/event/data/models/get_event_by_id.dart';
 import 'package:template/feature/event/data/models/my_events_model.dart';
 import 'package:template/feature/event/data/models/my_tickets_model.dart';
+import 'package:template/feature/event/data/models/scanned_ticket_model.dart';
 import 'package:template/feature/event/data/models/search_vendor_model.dart';
 import 'package:template/feature/event/data/models/ticket_success_model.dart';
 import 'package:template/feature/event/presentation/state/event_cubit/event_cubit.dart';
@@ -39,4 +40,6 @@ abstract class EventRepo {
 
   //for ticket system
   Future<Either<MyTicketsModel?, AppErrorHandler>> getMyTickets();
+  Future<Either<ScannedTicketModel?, AppErrorHandler>> scanTheTicket(
+      {String? ticketId});
 }

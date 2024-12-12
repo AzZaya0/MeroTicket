@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
+import 'package:pretty_qr_code/pretty_qr_code.dart';
 import 'package:template/config/router/routers.dart';
 import 'package:template/core/common/controls/custom_image_network.dart';
 import 'package:template/core/common/controls/custom_text.dart';
@@ -57,79 +58,101 @@ class _MyTicketState extends State<MyTicket> {
                     height: null,
                     width: null,
                     dynamicSize: true,
-                    padding: EdgeInsets.all(8.h),
-                    radius: 12.h,
+                    padding:
+                        EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.h),
+                    radius: 16.h,
                     onTap: () {
                       Navigator.pushNamed(
                         context,
-                        AppRoutes.eventDetailRoute,
+                        AppRoutes.ticketDetailPage,
                         arguments: {
-                          'eventId': data?.event?.id,
-                          'isTicket': true
+                          'eventData': data?.event,
+                          'ticketData': data?.eventTicket,
+                          'user_ticket_id': data?.id.toString()
                         },
                       );
                     },
-                    elevation: 0.5,
-                    color: appColors(context).brandSecondary,
+                    elevation: 1.0,
+                    color: appColors(context).bgBackground,
+                    // shadowColor: appColors(context).gray100,
                     child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        // Event Image
                         ClipRRect(
-                          borderRadius: BorderRadius.circular(18.h),
+                          borderRadius: BorderRadius.circular(12.h),
                           child: CustomImageNetwork(
-                              imageUrl: data?.event?.eventImage ??
-                                  'https://offloadmedia.feverup.com/parissecret.com/wp-content/uploads/2023/09/06110716/Montage-photos-articles-PS-2023-12-06T110657.772-1024x683.jpg',
-                              boxFit: BoxFit.cover,
-                              height: 100.h,
-                              width: 90.h),
+                            imageUrl: data?.event?.eventImage ??
+                                'https://offloadmedia.feverup.com/parissecret.com/wp-content/uploads/2023/09/06110716/Montage-photos-articles-PS-2023-12-06T110657.772-1024x683.jpg',
+                            boxFit: BoxFit.cover,
+                            height: 100.h,
+                            width: 100.h,
+                          ),
                         ),
+
                         Gap(16.h),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CustomText(
-                              text: data?.event?.title ?? 'N/A',
-                              color: appColors(context).black,
-                              fontWeight: FontWeight.w500,
-                              size: 16.h,
-                            ),
-                            CustomText(
-                              text: data?.event?.address ?? 'N/A',
-                              color: appColors(context).gray600,
-                              size: 14.h,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            Row(
-                              children: [
-                                CustomText(
-                                  text: formatDate(
-                                      data?.event?.startDate ?? DateTime.now()),
+
+                        // Event Details
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Event Title
+                              CustomText(
+                                text: data?.event?.title ?? 'N/A',
+                                color: appColors(context).black,
+                                fontWeight: FontWeight.bold,
+                                size: 18.h,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+
+                              // Event Address
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 4.h),
+                                child: CustomText(
+                                  text: data?.event?.address ?? 'N/A',
+                                  color: appColors(context).gray600,
                                   size: 14.h,
-                                  color: appColors(context).gray400,
+                                  fontWeight: FontWeight.w400,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                                CustomText(
-                                  text: '-',
-                                  size: 14.h,
-                                  color: appColors(context).gray400,
+                              ),
+
+                              // Date Range
+                              Row(
+                                children: [
+                                  Icon(Icons.calendar_today,
+                                      size: 14.h,
+                                      color: appColors(context).gray400),
+                                  Gap(6.h),
+                                  CustomText(
+                                    text:
+                                        '${formatDate(data?.event?.startDate ?? DateTime.now())} - ${formatDate(data?.event?.endDate ?? DateTime.now())}',
+                                    size: 14.h,
+                                    color: appColors(context).gray400,
+                                  ),
+                                ],
+                              ),
+
+                              // Event Category
+                              Padding(
+                                padding: EdgeInsets.only(top: 6.h),
+                                child: CustomText(
+                                  text: data?.event?.eventCategory ?? 'N/A',
+                                  size: 12.h,
+                                  color: appColors(context).orange600,
+                                  fontWeight: FontWeight.w500,
                                 ),
-                                CustomText(
-                                  text: formatDate(
-                                      data?.event?.endDate ?? DateTime.now()),
-                                  size: 14.h,
-                                  color: appColors(context).gray400,
-                                ),
-                              ],
-                            ),
-                            CustomText(
-                              text: data?.event?.eventCategory ?? 'N/A',
-                              size: 12.h,
-                              color: appColors(context).orange600,
-                            )
-                          ],
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
-                  ).addMargin(EdgeInsets.all(8.h));
+                  ).addMargin(
+                      EdgeInsets.symmetric(vertical: 8.h, horizontal: 12.h));
                 },
               );
             } else {

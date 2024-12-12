@@ -5,11 +5,15 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:template/config/themes/themeExtension/theme_extension.dart';
+import 'package:template/core/app.dart';
 import 'package:template/feature/event/data/models/get_event_by_id.dart';
 
 import 'package:template/feature/event/data/models/my_events_model.dart'
     as M_Events;
+import 'package:template/feature/event/data/models/scanned_ticket_model.dart';
 import 'package:template/feature/event/data/repository/event_repo.dart';
 
 import '../../../../../config/constants/asset_manager.dart';
@@ -73,6 +77,10 @@ class EventCubit extends Cubit<EventState> {
           title: title);
       EasyLoading.dismiss();
       Navigator.of(context).pop();
+      EasyLoading.showSuccess(
+        'EventCreated',
+        dismissOnTap: true,
+      );
       // response.fold(ifLeft, ifRight);
     } else {}
   }
@@ -205,6 +213,48 @@ class EventCubit extends Cubit<EventState> {
     );
   }
 
+  scanTicket({required BuildContext context, String? ticketId}) async {
+    // emit(state.copyWith(eventStatus: EventStatus.loading));
+    EasyLoading.show(
+      indicator: lottieLoader(
+          ctx: context,
+          lottieAsset: LottieAssets.ticketLoadingLottie,
+          fit: BoxFit.fitHeight,
+          height: 200),
+      maskType: EasyLoadingMaskType.clear,
+    );
+    var response = await eventRepo.scanTheTicket(ticketId: ticketId.toString());
+    response.fold(
+      (l) {
+        EasyLoading.show(
+          indicator: Icon(
+            Icons.done_outline_rounded,
+            color: Colors.green,
+            size: 40.h,
+          ),
+          status: 'Ticket Valid',
+          dismissOnTap: true,
+        );
+        emit(state.copyWith(scannedTicket: l));
+      },
+      (r) {
+        EasyLoading.dismiss();
+        EasyLoading.show(
+          indicator: Icon(
+            Icons.close_rounded,
+            color: Colors.red,
+            size: 40.h,
+          ),
+          status: 'Ticket InValid',
+          dismissOnTap: true,
+        );
+        emit(state.copyWith(
+          eventStatus: EventStatus.error,
+        ));
+      },
+    );
+  }
+
   List<TicketType?> ticketList = [];
 
   void addTicket(TicketType ticketType) {
@@ -244,7 +294,7 @@ class EventCubit extends Cubit<EventState> {
     response.fold(
       (l) {
         EasyLoading.dismiss();
-        EasyLoading.showSuccess('Success !');
+        EasyLoading.showSuccess('Success !', dismissOnTap: true);
 
         Navigator.of(context).pop();
         Navigator.of(context).pop();

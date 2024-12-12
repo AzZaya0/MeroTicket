@@ -17,6 +17,7 @@ class CustomText extends StatelessWidget {
     this.textDecoration,
     this.height,
     this.textAlign,
+    this.overflow,
   }) : super(key: key);
   //initializing variables
   final String text;
@@ -30,6 +31,7 @@ class CustomText extends StatelessWidget {
   final TextDecoration? textDecoration;
   final double? height;
   final TextAlign? textAlign;
+  final TextOverflow? overflow;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -37,6 +39,7 @@ class CustomText extends StatelessWidget {
       child: Text(
         textAlign: textAlign,
         text,
+        overflow: overflow,
         maxLines: maxLines ?? 50,
         style: GoogleFonts.poppins(
             color: color ?? Theme.of(context).primaryColor,

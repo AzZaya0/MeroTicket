@@ -254,6 +254,9 @@ class ButtonSection extends StatelessWidget {
               color: const Color(0xff2656FF),
               onTap: () {
                 if (formKey?.currentState?.validate() ?? false) {
+
+
+
                   context.read<LoginCubit>().createAccount(
                       context: context,
                       name: nameController.text.toString(),

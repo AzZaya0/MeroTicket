@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:template/config/constants/api_endpoints.dart';
 import 'package:template/config/router/routers.dart';
+import 'package:template/config/themes/themeExtension/theme_extension.dart';
+import 'package:template/core/common/controls/custom_button.dart';
 import 'package:template/core/common/controls/custom_image_network.dart';
+import 'package:template/core/utils/extension.dart';
 import 'package:template/feature/auth/data/models/login_model.dart';
 import 'package:template/feature/auth/presentaion/state/login_cubit.dart';
 import '../../../../core/common/controls/custom_text.dart';
@@ -48,7 +52,7 @@ class SettingsPage extends StatelessWidget {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(999)),
                       child: CustomImageNetwork(
-                          imageUrl: data?.profileImage,
+                          imageUrl: (data?.profileImage),
                           boxFit: BoxFit.cover,
                           height: 60,
                           width: 60),
@@ -79,6 +83,24 @@ class SettingsPage extends StatelessWidget {
                 ),
               ),
 
+              CustomButton(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16.0),
+                color: Colors.white,
+                elevation: 5,
+                radius: 12,
+                onTap: () {
+                  Navigator.of(context).pushNamed(AppRoutes.eventHistoryPage);
+                },
+                child: Row(
+                  children: [
+                    CustomText(
+                      text: 'Event History',
+                      color: appColors(context).black,
+                    ),
+                  ],
+                ),
+              ).addMargin(EdgeInsets.all(16.0)),
               const Spacer(),
 
               // Logout Button

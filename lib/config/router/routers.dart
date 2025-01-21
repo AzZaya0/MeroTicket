@@ -4,6 +4,8 @@ import 'package:template/feature/auth/presentaion/pages/sign_up_page.dart';
 import 'package:template/feature/auth/presentaion/pages/vendor_sign_up.dart';
 import 'package:template/feature/event/data/models/my_tickets_model.dart';
 import 'package:template/feature/event/presentation/pages/event_detail.dart';
+import 'package:template/feature/event/presentation/pages/event_history.dart';
+import 'package:template/feature/event/presentation/pages/event_users.dart';
 import 'package:template/feature/event/presentation/pages/new_event_page.dart';
 import 'package:template/feature/home/bottom_nav_bar/main_nav_bar.dart';
 import 'package:template/feature/home/page/search_page.dart';
@@ -20,6 +22,8 @@ class AppRoutes {
   static const String eventDetailRoute = '/eventDetail';
   static const String searchPageRoute = '/searchPageRoute';
   static const String ticketDetailPage = '/ticketDetailPage';
+  static const String eventHistoryPage = '/eventHistoryPage';
+  static const String eventUsersPage = '/eventUsersPage';
 
   static final Map<String, Widget Function(BuildContext)> routes = {
     initialRoute: (context) => const SplashScreen(),
@@ -29,6 +33,8 @@ class AppRoutes {
     mainNavRoute: (context) => const MainNavBar(),
     newEventRoute: (context) => const NewEventPage(),
     searchPageRoute: (context) => const SearchPage(),
+    eventHistoryPage: (context) => const EventHistory(),
+    // eventUsersPage: (context) => const EventUsersPage(),
   };
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -45,12 +51,14 @@ class AppRoutes {
         // Ensure arguments are passed
         if (args != null) {
           final int? eventId = args['eventId'] ?? '';
-          final bool? isTicket = args['isTicket'] ?? '';
+          final bool? isTicket = args['isTicket'] ?? false;
+          final bool? viewTicket = args['viewTicket'] ?? true;
 
           return MaterialPageRoute(
             builder: (_) => EventDetail(
               eventId: eventId,
               isTicket: isTicket,
+              viewTicket: viewTicket,
             ),
           );
         }
@@ -58,6 +66,26 @@ class AppRoutes {
         // Fallback if no arguments are provided
         return MaterialPageRoute(
           builder: (_) => const EventDetail(
+            eventId: null,
+          ),
+        );
+      case eventUsersPage:
+        final args = settings.arguments as Map<String, dynamic>?;
+
+        // Ensure arguments are passed
+        if (args != null) {
+          final int? eventId = args['eventId'] ?? 0;
+
+          return MaterialPageRoute(
+            builder: (_) => EventUsersPage(
+              eventId: eventId,
+            ),
+          );
+        }
+
+        // Fallback if no arguments are provided
+        return MaterialPageRoute(
+          builder: (_) => const EventUsersPage(
             eventId: null,
           ),
         );

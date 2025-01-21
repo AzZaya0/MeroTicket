@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:template/config/constants/api_endpoints.dart';
 import 'package:template/config/themes/themeExtension/theme_extension.dart';
 import 'package:template/core/common/controls/custom_button.dart';
 import 'package:template/core/common/controls/custom_image_network.dart';
@@ -555,9 +556,9 @@ class _NewEventPageState extends State<NewEventPage> {
                                   children: [
                                     Gap(8.h),
                                     CustomImageNetwork(
-                                        imageUrl: state.selectedVendors?[index]
+                                        imageUrl: updateImageUrlForEmulator(state.selectedVendors?[index]
                                                 .organizationLogo ??
-                                            '',
+                                            ''),
                                         boxFit: BoxFit.cover,
                                         height: 50,
                                         width: 50),

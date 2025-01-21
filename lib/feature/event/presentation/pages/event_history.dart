@@ -14,17 +14,17 @@ import 'package:template/core/common/controls/custom_text.dart';
 import 'package:template/core/utils/extension.dart';
 import 'package:template/feature/event/presentation/state/event_cubit/event_cubit.dart';
 
-class MyEvents extends StatefulWidget {
-  const MyEvents({super.key});
+class EventHistory extends StatefulWidget {
+  const EventHistory({super.key});
 
   @override
-  State<MyEvents> createState() => _MyEventsState();
+  State<EventHistory> createState() => _EventHistoryState();
 }
 
-class _MyEventsState extends State<MyEvents> {
+class _EventHistoryState extends State<EventHistory> {
   @override
   void initState() {
-    context.read<EventCubit>().getMyEvents();
+    context.read<EventCubit>().getEventHistory();
     super.initState();
   }
 
@@ -39,24 +39,9 @@ class _MyEventsState extends State<MyEvents> {
     return Scaffold(
       appBar: AppBar(
         title: CustomText(
-          text: 'My Events',
+          text: 'Event History',
           color: appColors(context).black,
           fontWeight: FontWeight.w600,
-        ),
-      ),
-      floatingActionButton: CustomButton(
-        height: 0,
-        width: 0,
-        dynamicSize: true,
-        padding: EdgeInsets.all(8.h),
-        onTap: () {
-          Navigator.pushNamed(context, AppRoutes.newEventRoute);
-        },
-        color: appColors(context).primary,
-        radius: 8.h,
-        child: CustomText(
-          text: 'Create More',
-          color: appColors(context).brandSecondary,
         ),
       ),
       backgroundColor: appColors(context).bgBackground,
@@ -79,7 +64,11 @@ class _MyEventsState extends State<MyEvents> {
                     Navigator.pushNamed(
                       context,
                       AppRoutes.eventDetailRoute,
-                      arguments: {'eventId': eventData?.id, 'isTicket': true},
+                      arguments: {
+                        'eventId': eventData?.id,
+                        'isTicket': false,
+                        'viewTicket': false
+                      },
                     );
                   },
                   elevation: 0.5,
@@ -193,23 +182,15 @@ class _MyEventsState extends State<MyEvents> {
           } else {
             return SizedBox(
               width: MediaQuery.of(context).size.width,
-              child: InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, AppRoutes.newEventRoute);
-                },
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    lottieLoader(
-                        ctx: context,
-                        lottieAsset: LottieAssets.createEventLottie),
-                    CustomText(
-                      text: 'Tap to Create One',
-                      color: appColors(context).primary,
-                    ),
-                  ],
-                ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CustomText(
+                    text: 'NO Event History',
+                    color: appColors(context).primary,
+                  ),
+                ],
               ),
             );
           }

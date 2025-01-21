@@ -6,6 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:haptic_feedback/haptic_feedback.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_code_dart_scan/qr_code_dart_scan.dart';
+import 'package:template/config/constants/api_endpoints.dart';
+import 'package:template/config/router/routers.dart';
 // import 'package:flutter_haptic/flutter_haptic.dart';
 import 'package:template/config/themes/themeExtension/theme_extension.dart';
 import 'package:template/core/common/controls/custom_button.dart';
@@ -16,10 +18,11 @@ import 'package:template/core/utils/extension.dart';
 import 'package:template/feature/event/presentation/state/event_cubit/event_cubit.dart';
 
 class EventDetail extends StatefulWidget {
-  const EventDetail({super.key, this.eventId, this.isTicket});
+  const EventDetail({super.key, this.eventId, this.isTicket, this.viewTicket});
 
   final int? eventId;
   final bool? isTicket;
+  final bool? viewTicket;
 
   @override
   State<EventDetail> createState() => _EventDetailState();
@@ -44,40 +47,42 @@ class _EventDetailState extends State<EventDetail> {
     return BlocBuilder<EventCubit, EventState>(builder: (context, state) {
       var eventData = state.getEventById?.data;
       return Scaffold(
-          bottomNavigationBar: (widget.isTicket ?? false)
-              ? SizedBox()
-              : Container(
-                  color: appColors(context).brandSecondary,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Gap(30.h),
-                      CustomText(
-                        text: '',
-                        color: appColors(context).black,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      Spacer(),
-                      CustomButton(
-                        radius: 14.h,
-                        width: 200.h,
-                        color: appColors(context).primary,
-                        onTap: () {
-                          ShowCustomBottomSheet().showBottomSheetsNew(
-                              pageIndexNotifier: pageIndexNotifier,
-                              eventTickets: eventData?.eventTickets,
-                              eventId: eventData?.id,
-                              context: context);
-                        },
-                        child: CustomText(
-                          text: 'View Ticket',
-                          fontWeight: FontWeight.w600,
-                          color: appColors(context).brandSecondary,
-                        ),
-                      ),
-                    ],
-                  ).addMargin(EdgeInsets.all(8.h)),
-                ),
+          bottomNavigationBar: (widget.viewTicket ?? true)
+              ? (widget.isTicket ?? false)
+                  ? SizedBox()
+                  : Container(
+                      color: appColors(context).brandSecondary,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Gap(30.h),
+                          CustomText(
+                            text: '',
+                            color: appColors(context).black,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          Spacer(),
+                          CustomButton(
+                            radius: 14.h,
+                            width: 200.h,
+                            color: appColors(context).primary,
+                            onTap: () {
+                              ShowCustomBottomSheet().showBottomSheetsNew(
+                                  pageIndexNotifier: pageIndexNotifier,
+                                  eventTickets: eventData?.eventTickets,
+                                  eventId: eventData?.id,
+                                  context: context);
+                            },
+                            child: CustomText(
+                              text: 'View Ticket',
+                              fontWeight: FontWeight.w600,
+                              color: appColors(context).brandSecondary,
+                            ),
+                          ),
+                        ],
+                      ).addMargin(EdgeInsets.all(8.h)),
+                    )
+              : null,
           appBar: AppBar(
             title: CustomText(
               text: eventData?.title ?? 'N/A',
@@ -98,7 +103,8 @@ class _EventDetailState extends State<EventDetail> {
                     height: 100.h,
                     width: 100.h,
                     child: CustomImageNetwork(
-                        imageUrl: state.getEventById?.data?.eventImage ?? '',
+                        imageUrl: updateImageUrlForEmulator(
+                            state.getEventById?.data?.eventImage ?? ''),
                         boxFit: BoxFit.cover,
                         height: 100.h,
                         width: double.infinity),
@@ -230,47 +236,72 @@ class _EventDetailState extends State<EventDetail> {
                 ],
               ).addMargin(EdgeInsets.all(16.h)),
               (widget.isTicket ?? false)
-                  ? SizedBox(
-                      height: 200,
-                      child: QRCodeDartScanView(
-                        scanInvertedQRCode:
-                            true, // enable scan invert qr code ( default = false)
+                  ? Column(
+                      children: [
+                        SizedBox(
+                          height: 200,
+                          child: QRCodeDartScanView(
+                            scanInvertedQRCode:
+                                true, // enable scan invert qr code ( default = false)
 
-                        typeScan: TypeScan
-                            .live, // if TypeScan.takePicture will try decode when click to take a picture(default TypeScan.live)
-                        intervalScan: const Duration(seconds: 2)
-                        // onResultInterceptor: (old,new){
-                        //  do any rule to controll onCapture.
-                        // }
-                        // takePictureButtonBuilder: (context,controller,isLoading){ // if typeScan == TypeScan.takePicture you can customize the button.
-                        //    if(loading) return CircularProgressIndicator();
-                        //    return ElevatedButton(
-                        //       onPressed:controller.takePictureAndDecode,
-                        //       child:Text('Take a picture'),
-                        //    );
-                        // }
-                        // resolutionPreset: = QrCodeDartScanResolutionPreset.high,
-                        // formats: [ // You can restrict specific formats.
-                        //  BarcodeFormat.qrCode,
-                        //  BarcodeFormat.aztec,
-                        //  BarcodeFormat.dataMatrix,
-                        //  BarcodeFormat.pdf417,
-                        //  BarcodeFormat.code39,
-                        //  BarcodeFormat.code93,
-                        //  BarcodeFormat.code128,
-                        //  BarcodeFormat.ean8,
-                        //  BarcodeFormat.ean13,
-                        // ],,
-                        ,
-                        onCapture: (Result result) async {
-                          await Haptics.vibrate(HapticsType.success);
-                          print(result.text);
-                          context.read<EventCubit>().scanTicket(
-                              ticketId: result.text, context: context);
-                        },
-                      ),
+                            typeScan: TypeScan
+                                .live, // if TypeScan.takePicture will try decode when click to take a picture(default TypeScan.live)
+                            intervalScan: const Duration(seconds: 2)
+                            // onResultInterceptor: (old,new){
+                            //  do any rule to controll onCapture.
+                            // }
+                            // takePictureButtonBuilder: (context,controller,isLoading){ // if typeScan == TypeScan.takePicture you can customize the button.
+                            //    if(loading) return CircularProgressIndicator();
+                            //    return ElevatedButton(
+                            //       onPressed:controller.takePictureAndDecode,
+                            //       child:Text('Take a picture'),
+                            //    );
+                            // }
+                            // resolutionPreset: = QrCodeDartScanResolutionPreset.high,
+                            // formats: [ // You can restrict specific formats.
+                            //  BarcodeFormat.qrCode,
+                            //  BarcodeFormat.aztec,
+                            //  BarcodeFormat.dataMatrix,
+                            //  BarcodeFormat.pdf417,
+                            //  BarcodeFormat.code39,
+                            //  BarcodeFormat.code93,
+                            //  BarcodeFormat.code128,
+                            //  BarcodeFormat.ean8,
+                            //  BarcodeFormat.ean13,
+                            // ],,
+                            ,
+                            onCapture: (Result result) async {
+                              await Haptics.vibrate(HapticsType.success);
+                              print(result.text);
+                              context.read<EventCubit>().scanTicket(
+                                  ticketId: result.text, context: context);
+                            },
+                          ),
+                        ),
+                        Gap(20.h),
+                        CustomText(text: 'Scan Ticket Here')
+                      ],
                     )
-                  : SizedBox()
+                  : SizedBox(),
+              Gap(50.h),
+              Container(
+                decoration: BoxDecoration(border: Border.all()),
+                child: ListTile(
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      AppRoutes.eventUsersPage,
+                      arguments: {
+                        'eventId': widget.eventId ?? 0,
+                      },
+                    );
+                  },
+                  title: CustomText(
+                    text: "View participation's",
+                    color: appColors(context).black,
+                  ),
+                ),
+              )
             ],
           ).addMargin(EdgeInsets.all(16.h)));
     });

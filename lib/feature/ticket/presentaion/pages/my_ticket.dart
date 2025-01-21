@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
+import 'package:template/config/constants/api_endpoints.dart';
 import 'package:template/config/router/routers.dart';
 import 'package:template/core/common/controls/custom_image_network.dart';
 import 'package:template/core/common/controls/custom_text.dart';
@@ -82,8 +83,8 @@ class _MyTicketState extends State<MyTicket> {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(12.h),
                           child: CustomImageNetwork(
-                            imageUrl: data?.event?.eventImage ??
-                                'https://offloadmedia.feverup.com/parissecret.com/wp-content/uploads/2023/09/06110716/Montage-photos-articles-PS-2023-12-06T110657.772-1024x683.jpg',
+                            imageUrl: updateImageUrlForEmulator(data?.event?.eventImage ??
+                                'https://offloadmedia.feverup.com/parissecret.com/wp-content/uploads/2023/09/06110716/Montage-photos-articles-PS-2023-12-06T110657.772-1024x683.jpg'),
                             boxFit: BoxFit.cover,
                             height: 100.h,
                             width: 100.h,

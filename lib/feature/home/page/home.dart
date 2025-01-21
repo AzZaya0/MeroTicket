@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
+import 'package:template/config/constants/api_endpoints.dart';
 
 import 'package:template/config/router/routers.dart';
 import 'package:template/config/themes/themeExtension/theme_extension.dart';
@@ -179,8 +180,8 @@ class EventHomeCard extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Image.network(
-                singleEventData?.eventImage ??
-                    'https://vancouver.ca/images/cov/feature/crowd-hands-clapping.jpg',
+                updateImageUrlForEmulator(singleEventData?.eventImage ??
+                    'https://vancouver.ca/images/cov/feature/crowd-hands-clapping.jpg'),
                 height: 150.h,
                 width: 250.h,
                 fit: BoxFit.cover,

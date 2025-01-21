@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:template/core/failure/error_handler.dart';
 import 'package:template/feature/event/data/models/create_event_model.dart';
+import 'package:template/feature/event/data/models/event_user_model.dart';
 import 'package:template/feature/event/data/models/get_event_by_id.dart';
 import 'package:template/feature/event/data/models/my_events_model.dart';
 import 'package:template/feature/event/data/models/my_tickets_model.dart';
@@ -33,6 +34,7 @@ abstract class EventRepo {
   Future<Either<AllEventsModel?, AppErrorHandler>> searchEvent(
       {required String query});
   Future<Either<MyEventsModel?, AppErrorHandler>> getMyEvents();
+  Future<Either<MyEventsModel?, AppErrorHandler>> getEventHistory();
   Future<Either<AllEventsModel?, AppErrorHandler>> getAllEvents();
   Future<Either<TicketSuccessModel?, AppErrorHandler>> buyTicket(
       {int? eventId, int? ticketId, String? ticketPrice});
@@ -42,4 +44,6 @@ abstract class EventRepo {
   Future<Either<MyTicketsModel?, AppErrorHandler>> getMyTickets();
   Future<Either<ScannedTicketModel?, AppErrorHandler>> scanTheTicket(
       {String? ticketId});
+  Future<Either<EventUserModel?, AppErrorHandler>> getEventUsers(
+      {int? eventId});
 }

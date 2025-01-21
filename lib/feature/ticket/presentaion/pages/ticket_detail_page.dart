@@ -20,6 +20,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
+import 'package:template/config/constants/api_endpoints.dart';
 import 'package:template/config/themes/themeExtension/theme_extension.dart';
 import 'package:template/core/common/controls/custom_image_network.dart';
 import 'package:template/core/common/controls/custom_text.dart';
@@ -98,7 +99,7 @@ class TicketDetailPage extends StatelessWidget {
                 ],
               ),
               child: CustomImageNetwork(
-                imageUrl: eventData?.eventImage ?? '',
+                imageUrl: updateImageUrlForEmulator(eventData?.eventImage ?? ''),
                 boxFit: BoxFit.cover,
                 height: 200.h,
                 width: double.infinity,

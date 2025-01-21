@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:template/config/constants/api_endpoints.dart';
 import 'package:template/config/themes/themeExtension/theme_extension.dart';
 import 'package:template/core/common/controls/custom_button.dart';
 import 'package:template/core/common/controls/custom_image_network.dart';
@@ -163,7 +164,7 @@ class BottomSheetPages {
           children: [
             Gap(8.h),
             CustomImageNetwork(
-                imageUrl: imageUrl,
+                imageUrl: updateImageUrlForEmulator(imageUrl),
                 boxFit: BoxFit.cover,
                 height: 50,
                 width: 50),

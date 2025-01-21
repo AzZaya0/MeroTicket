@@ -9,6 +9,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:template/config/themes/themeExtension/theme_extension.dart';
 import 'package:template/core/app.dart';
+import 'package:template/feature/event/data/models/event_user_model.dart'
+    as event_Users;
 import 'package:template/feature/event/data/models/get_event_by_id.dart';
 
 import 'package:template/feature/event/data/models/my_events_model.dart'
@@ -180,6 +182,33 @@ class EventCubit extends Cubit<EventState> {
     response.fold(
       (l) {
         emit(state.copyWith(eventStatus: EventStatus.loaded, myEventsModel: l));
+      },
+      (r) {
+        emit(state.copyWith(eventStatus: EventStatus.error));
+      },
+    );
+  }
+
+  getEventHistory() async {
+    emit(state.copyWith(eventStatus: EventStatus.loading));
+    var response = await eventRepo.getMyEvents();
+    response.fold(
+      (l) {
+        emit(state.copyWith(eventStatus: EventStatus.loaded, myEventsModel: l));
+      },
+      (r) {
+        emit(state.copyWith(eventStatus: EventStatus.error));
+      },
+    );
+  }
+
+  getEventUsers({int? eventId}) async {
+    emit(state.copyWith(eventStatus: EventStatus.loading));
+    var response = await eventRepo.getEventUsers(eventId: eventId);
+    response.fold(
+      (l) {
+        emit(
+            state.copyWith(eventStatus: EventStatus.loaded, eventUserModel: l));
       },
       (r) {
         emit(state.copyWith(eventStatus: EventStatus.error));
